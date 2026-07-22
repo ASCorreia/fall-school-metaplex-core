@@ -1,0 +1,25 @@
+[package]
+name = "soulbound-nft"
+version = "0.1.0"
+description = "Soul-bound NFT minter built on Metaplex Core"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib", "lib"]
+name = "soulbound_nft"
+
+[features]
+default = []
+cpi = ["no-entrypoint"]
+no-entrypoint = []
+no-idl = []
+no-log-ix-name = []
+idl-build = ["anchor-lang/idl-build"]
+
+[dependencies]
+anchor-lang = "1.1.2"
+# NOTE: mpl-core's optional `anchor` feature currently targets anchor-lang
+# 0.31/0.32 only. We intentionally use the default features (solana-program 3.x,
+# which shares the same AccountInfo type as anchor-lang 1.x) and interact with
+# MPL Core exclusively through its generated CPI builders.
+mpl-core = "0.12.1"
