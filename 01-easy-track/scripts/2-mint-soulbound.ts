@@ -16,7 +16,7 @@ import { getUmi, explorerAddress, explorerTx } from "./umi";
 // Personalize these! NAME should include your name or nickname.
 const NAME = "Time";
 const URI =
-  "01-easy-track/metadata.json";
+  "https://raw.githubusercontent.com/Nancheung23/summer-school-metaplex-core/refs/heads/main/01-easy-track/metadata.json";
 
 async function main() {
   const umi = getUmi();

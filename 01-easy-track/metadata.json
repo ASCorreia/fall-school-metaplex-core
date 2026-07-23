@@ -2,7 +2,7 @@
     "name": "Time",
     "symbol": "Time",
     "description": "Time is a song by Pink Floyd from their 1973 album The Dark Side of the Moon, exploring the passage of life and the urgency to seize the moment.",
-    "image": "01-easy-track/test.jpg",
+    "image": "https://raw.githubusercontent.com/Nancheung23/summer-school-metaplex-core/refs/heads/main/01-easy-track/test.jpg",
     "attributes": [
         {
             "trait_type": "Event",
