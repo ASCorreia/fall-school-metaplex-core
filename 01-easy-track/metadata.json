@@ -1,0 +1,16 @@
+{
+    "name": "Time",
+    "symbol": "Time",
+    "description": "Time is a song by Pink Floyd from their 1973 album The Dark Side of the Moon, exploring the passage of life and the urgency to seize the moment.",
+    "image": "01-easy-track/test.jpg",
+    "attributes": [
+        {
+            "trait_type": "Event",
+            "value": "Summer School 2026"
+        },
+        {
+            "trait_type": "Student",
+            "value": "Yannan Zhang"
+        }
+    ]
+}
