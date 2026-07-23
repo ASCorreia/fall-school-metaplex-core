@@ -1,0 +1,10 @@
+{
+  "name": "YOUR NFT NAME",
+  "symbol": "SBNFT",
+  "description": "Soulbound NFT minted at Summer School, bound to my wallet forever.",
+  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "attributes": [
+    { "trait_type": "Event", "value": "Summer School 2026" },
+    { "trait_type": "Student", "value": "YOUR NAME" }
+  ]
+}

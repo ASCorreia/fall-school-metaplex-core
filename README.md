@@ -1,60 +1,56 @@
-# Summer School — Soul-Bound NFT with Metaplex Core
+# Summer School: Metaplex Core
 
-An [Anchor](https://www.anchor-lang.com) (v1.1.2) program that mints a **soul-bound (non-transferable) NFT** as a [Metaplex Core](https://developers.metaplex.com/core) asset.
+Hands-on workshop for [Metaplex Core](https://www.metaplex.com/docs/smart-contracts/core), Solana's next-gen NFT standard. A laptop and Node.js are all you need.
 
-## How the soul-bound part works
+## Repository structure
 
-Instead of custom transfer-blocking logic, the program leans on **Metaplex Core plugins**. When the asset is created (via CPI to MPL Core's `CreateV2`), it attaches the **`PermanentFreezeDelegate`** plugin with:
-
-- `frozen: true` — the asset is frozen from birth, so MPL Core itself rejects every transfer or burn attempt.
-- `authority: PluginAuthority::None` — no one holds the authority to update the plugin, so the asset can **never be thawed**. It is bound to its owner's wallet forever.
-
-An alternative Core-native approach is the Oracle external plugin adapter (an oracle account that always rejects `Transfer` lifecycle events); the permanent freeze plugin is the simplest and fully on-chain-static option.
-
-## Project layout
-
-- `programs/soulbound-nft/src/lib.rs` — the program entrypoint: declares the program ID and exposes one instruction, `mint_soulbound_nft(name, uri)`, delegating to its handler.
-- `programs/soulbound-nft/src/instructions/mint_soulbound_nft.rs` — the `MintSoulboundNft` accounts struct and the handler, which CPIs into MPL Core using `CreateV2CpiBuilder` from the `mpl-core` Rust SDK (v0.12).
-- `tests/soulbound-nft.ts` — mints an asset, verifies the freeze plugin is active, and asserts that a transfer attempt by the owner fails.
-
-Note: `mpl-core`'s optional `anchor` feature still targets anchor-lang 0.31/0.32, so this project uses the crate's default features — both crates share the same `solana-account-info` 3.x `AccountInfo`, and all interaction goes through the generated CPI builders.
-
-## Prerequisites
-
-- Rust + Solana toolchain **v3.1.10** (`sh -c "$(curl -sSfL https://release.anza.xyz/v3.1.10/install)"`)
-- Anchor CLI **1.1.2** (`avm install 1.1.2 && avm use 1.1.2`)
-- [Surfpool](https://github.com/solana-foundation/surfpool) ≥ 1.1.2 (default test backend for Anchor v1)
-- Node 20+ and yarn
-
-## Build & test
-
-```bash
-yarn install
-anchor keys sync   # regenerate/sync the program ID with your local keypair
-anchor build
-anchor test        # Surfpool (mainnet fork — MPL Core already deployed)
+```
+.
+├── 01-easy-track/       (1) Soulbound NFT with TypeScript / Umi  ← start here
+│   ├── README.md            full step-by-step guide
+│   ├── scripts/             setup wallet → mint (your task) → verify
+│   └── solution/            reference solution (spoilers)
+├── 02-anchor-track/     (2) Soulbound NFT as a Rust on-chain program (Anchor)
+│   ├── README.md            build, test, deploy to devnet
+│   ├── programs/            the Anchor program
+│   └── submissions/         submit your PR here
+└── 03-bonus-editions/   Bonus: Print Editions with different royalties
+    ├── README.md            the challenge
+    ├── editions.ts          your task (complete the TODOs)
+    └── submissions/         submit your PR here
 ```
 
-To use the legacy local validator instead, `Anchor.toml` already clones the MPL Core program (`CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d`) from mainnet:
+## The tracks
 
-```bash
-anchor test --validator legacy
-```
+Tracks (1) and (2) build the same thing: a **soulbound (non-transferable) NFT** on devnet, permanently bound to your wallet. For a deeper understanding of how soulbound assets work in Core, see the official guide: [Soulbound Assets in MPL Core](https://www.metaplex.com/docs/smart-contracts/core/guides/create-soulbound-nft-asset).
 
-`anchor build` in Anchor v1 errors if the declared program ID doesn't match your keypair file — that's what `anchor keys sync` fixes on first build.
+### (1) Easy track: TypeScript / Umi
 
-## Minting from a client
+No Rust, no Solana CLI. Complete the TODOs in `scripts/2-mint-soulbound.ts` and mint on devnet.
 
-```ts
-await program.methods
-  .mintSoulboundNft("My Diploma", "https://arweave.net/metadata.json")
-  .accountsPartial({
-    payer: wallet.publicKey,
-    asset: assetKeypair.publicKey,   // fresh keypair, must sign
-    owner: recipient,                // wallet the NFT is bound to
-    mplCoreProgram: new PublicKey("CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"),
-    systemProgram: SystemProgram.programId,
-  })
-  .signers([assetKeypair])
-  .rpc();
-```
+**→ Start with [01-easy-track/README.md](./01-easy-track/README.md)**
+
+**Submit:** your asset's explorer link, `https://explorer.solana.com/address/<ASSET_ADDRESS>?cluster=devnet`
+
+### (2) Anchor track: Rust on-chain program
+
+The same soulbound mint, but as an Anchor program that CPIs into MPL Core. Requires the Rust + Solana + Anchor toolchain.
+
+**→ Start with [02-anchor-track/README.md](./02-anchor-track/README.md)**
+
+**Submit:** a PR adding `02-anchor-track/submissions/<your-github-handle>/` with your client mint script and a filled-in `SUBMISSION.md` (program ID + asset explorer links).
+
+## How the soulbound part works
+
+The asset is created with the **`PermanentFreezeDelegate`** plugin:
+
+- `frozen: true`: frozen from birth; MPL Core itself rejects every transfer or burn attempt.
+- `authority: { type: "None" }`: nobody can ever update the plugin, so it can never be thawed. Bound to its owner's wallet forever.
+
+## Bonus challenge: Print Editions with different royalties
+
+Based on [Print Editions with MPL Core](https://www.metaplex.com/docs/smart-contracts/core/guides/print-editions): create a Master Edition collection, print 3 numbered Editions into it, and give each edition a different royalty via an asset-level `Royalties` plugin.
+
+**→ Start with [03-bonus-editions/README.md](./03-bonus-editions/README.md)**
+
+**Submit:** a PR adding `03-bonus-editions/submissions/<your-github-handle>/` with your `editions.ts` and a filled-in `SUBMISSION.md` (4 explorer links: collection + 3 editions).

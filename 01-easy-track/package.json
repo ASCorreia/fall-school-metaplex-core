@@ -1,0 +1,20 @@
+{
+  "name": "01-easy-track",
+  "private": true,
+  "scripts": {
+    "setup": "tsx scripts/1-setup-wallet.ts",
+    "mint": "tsx scripts/2-mint-soulbound.ts",
+    "verify": "tsx scripts/3-verify.ts",
+    "solution": "tsx solution/mint-soulbound.ts"
+  },
+  "dependencies": {
+    "@metaplex-foundation/mpl-core": "^1.10.0",
+    "@metaplex-foundation/umi": "^1.2.0",
+    "@metaplex-foundation/umi-bundle-defaults": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.4.5"
+  }
+}
