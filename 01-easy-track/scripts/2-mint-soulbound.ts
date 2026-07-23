@@ -14,9 +14,9 @@ import { create } from "@metaplex-foundation/mpl-core";
 import { getUmi, explorerAddress } from "./umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "5ts6sC2JneV3EwcgE2S65V2DYumYmYu35cSpUjTdSv8w Soulbound NFT";
 const URI =
-  "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
+  "https://raw.githubusercontent.com/stawuah/summer-school-metaplex-core/feature/mint-2-soulbound/01-easy-track/metadata-template.json";
 
 async function main() {
   const umi = getUmi();
@@ -26,6 +26,24 @@ async function main() {
   //
   // TODO 1: Every Core asset lives at its own fresh address.
   //         Generate a signer for it with generateSigner(umi).
+  const asset = generateSigner(umi);
+
+  await create(umi, {
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins: [
+      {
+        type: "PermanentFreezeDelegate",
+        frozen: true,
+        authority: { type: "None" },
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  console.log("\nMinted soulbound NFT!");
+  console.log("Asset address:", asset.publicKey.toString());
+  console.log("Asset explorer link:", explorerAddress(asset.publicKey.toString()));
   //
   // TODO 2: Call create(umi, { ... }) with:
   //         - asset, name: NAME, uri: URI
@@ -37,7 +55,6 @@ async function main() {
   //
   // TODO 3: Print the asset address and explorerAddress(...) link.
   //
-  throw new Error("Not implemented yet: replace this with your code!");
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
