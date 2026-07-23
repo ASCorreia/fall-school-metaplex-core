@@ -8,6 +8,10 @@ edition = "2021"
 crate-type = ["cdylib", "lib"]
 name = "soulbound_nft"
 
+[provider]
+cluster = "devnet"
+wallet = "/home/yannan/.config/solana/id.json"
+
 [features]
 default = []
 cpi = ["no-entrypoint"]
