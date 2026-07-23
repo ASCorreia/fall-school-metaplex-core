@@ -11,10 +11,11 @@
  */
 import { generateSigner } from "@metaplex-foundation/umi";
 import { create } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "./umi";
+import { base58 } from "@metaplex-foundation/umi/serializers";
+import { getUmi, explorerAddress, explorerTx } from "./umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "Piotr Skierka";
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
@@ -22,6 +23,24 @@ async function main() {
   const umi = getUmi();
   console.log("Minting from wallet:", umi.identity.publicKey.toString());
 
+  const asset = generateSigner(umi);
+
+  const { signature } = await create(umi,{
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins:[ {
+      type: 'PermanentFreezeDelegate',
+      frozen: true,
+      authority: { type: "None" },
+    }],
+  }).sendAndConfirm(umi);
+
+  const sig = base58.deserialize(signature)[0];
+  console.log("\nMinted soulbound NFT!");
+  console.log("Asset address:", asset.publicKey.toString());
+  console.log("Asset explorer link:", explorerAddress(asset.publicKey.toString()));
+  console.log("Transaction:", explorerTx(sig));
   // ── YOUR CODE STARTS HERE ────────────────────────────────────────────
   //
   // TODO 1: Every Core asset lives at its own fresh address.
@@ -37,7 +56,6 @@ async function main() {
   //
   // TODO 3: Print the asset address and explorerAddress(...) link.
   //
-  throw new Error("Not implemented yet: replace this with your code!");
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
