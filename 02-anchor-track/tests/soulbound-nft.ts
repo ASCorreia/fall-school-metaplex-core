@@ -8,10 +8,10 @@ import { fetchAsset, transferV1 } from "@metaplex-foundation/mpl-core";
 import { SoulboundNft } from "../target/types/soulbound_nft";
 
 const MPL_CORE_PROGRAM_ID = new PublicKey(
-  "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d"
+  "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
 );
 
-const NAME = "Turbin3 Summer School Diploma";
+const NAME = "Turbin3 Fall School Diploma";
 const URI = "https://arweave.net/diploma.json";
 
 describe("soulbound-nft", () => {
@@ -45,20 +45,20 @@ describe("soulbound-nft", () => {
     assert.isNotNull(info, "asset account should exist");
     assert.isTrue(
       info!.owner.equals(MPL_CORE_PROGRAM_ID),
-      "asset should be owned by MPL Core"
+      "asset should be owned by MPL Core",
     );
 
     // The PermanentFreezeDelegate plugin is present and frozen.
     const coreAsset = await fetchAsset(
       umi(),
-      publicKey(asset.publicKey.toBase58())
+      publicKey(asset.publicKey.toBase58()),
     );
     assert.equal(coreAsset.name, NAME);
     assert.equal(coreAsset.uri, URI);
     assert.equal(coreAsset.owner, publicKey(holder.publicKey.toBase58()));
     assert.isTrue(
       coreAsset.permanentFreezeDelegate?.frozen === true,
-      "asset should be permanently frozen (soul-bound)"
+      "asset should be permanently frozen (soul-bound)",
     );
   });
 
@@ -66,14 +66,12 @@ describe("soulbound-nft", () => {
     // Fund the holder so it can pay the transfer fee.
     const sig = await provider.connection.requestAirdrop(
       holder.publicKey,
-      LAMPORTS_PER_SOL
+      LAMPORTS_PER_SOL,
     );
     await provider.connection.confirmTransaction(sig);
 
     const u = umi().use(
-      keypairIdentity(
-        umi().eddsa.createKeypairFromSecretKey(holder.secretKey)
-      )
+      keypairIdentity(umi().eddsa.createKeypairFromSecretKey(holder.secretKey)),
     );
 
     const destination = Keypair.generate();
@@ -88,7 +86,7 @@ describe("soulbound-nft", () => {
       assert.notEqual(
         err.message,
         "transfer should have failed for a soul-bound asset",
-        "MPL Core should reject the transfer of a frozen asset"
+        "MPL Core should reject the transfer of a frozen asset",
       );
     }
   });

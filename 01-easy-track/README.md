@@ -13,7 +13,7 @@ A **Metaplex Core** asset is Solana's next-gen NFT standard: a single on-chain a
 
 ## Prerequisites
 
-- Node.js 20+ (`node --version`)
+- Node.js 22.12+ (24 LTS recommended; `node --version`)
 - Git
 - No Rust, no Solana CLI, no wallet extension needed
 
@@ -21,7 +21,7 @@ A **Metaplex Core** asset is Solana's next-gen NFT standard: a single on-chain a
 
 ```bash
 git clone <this-repo-url>
-cd summer-school-metaplex-core/01-easy-track
+cd fall-school-metaplex-core/01-easy-track
 npm install
 npm run setup
 ```

@@ -2,7 +2,7 @@
  * Step 2 (YOUR TASK): mint a soulbound NFT on devnet.
  * Run: npm run mint
  *
- * Requirements (see GUIDE.md):
+ * Requirements (see README.md):
  *  - Create a Metaplex Core asset on devnet
  *  - Attach the PermanentFreezeDelegate plugin so it can NEVER be transferred
  *  - Print the asset address and its Solana Explorer link

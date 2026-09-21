@@ -1,4 +1,4 @@
-# Summer School: Metaplex Core
+# Solana Fall School: Metaplex Core
 
 Hands-on workshop for [Metaplex Core](https://www.metaplex.com/docs/smart-contracts/core), Solana's next-gen NFT standard. A laptop and Node.js are all you need.
 

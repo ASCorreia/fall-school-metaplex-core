@@ -1,6 +1,6 @@
 # Advanced Track: Soulbound NFT via an Anchor Program
 
-An [Anchor](https://www.anchor-lang.com) (v1.1.2) program that mints the same soulbound NFT on-chain, by CPI into MPL Core's `CreateV2` with the `PermanentFreezeDelegate` plugin (`frozen: true`, `authority: PluginAuthority::None`).
+An [Anchor](https://www.anchor-lang.com) (v1.2.0) program that mints the same soulbound NFT on-chain, by CPI into MPL Core's `CreateV2` with the `PermanentFreezeDelegate` plugin (`frozen: true`, `authority: PluginAuthority::None`).
 
 This track requires the Rust toolchain. It is **optional** and not needed for the main assignment in [01-easy-track](../01-easy-track/README.md).
 
@@ -14,10 +14,10 @@ Note: `mpl-core`'s optional `anchor` feature still targets anchor-lang 0.31/0.32
 
 ## Prerequisites
 
-- Rust + Solana toolchain **v3.1.10** (`sh -c "$(curl -sSfL https://release.anza.xyz/v3.1.10/install)"`)
-- Anchor CLI **1.1.2** (`avm install 1.1.2 && avm use 1.1.2`)
-- [Surfpool](https://github.com/solana-foundation/surfpool) ≥ 1.1.2 (default test backend for Anchor v1)
-- Node 20+ and yarn
+- Rust + Solana (Agave) CLI **v4.1.2** (`sh -c "$(curl -sSfL https://release.anza.xyz/v4.1.2/install)"`), the version Anchor 1.2.0 is tested against
+- Anchor CLI **1.2.0** (`avm install 1.2.0 && avm use 1.2.0`)
+- [Surfpool](https://github.com/solana-foundation/surfpool) ≥ 1.6.0 (default test backend for Anchor v1)
+- Node 22.12+ (24 LTS recommended) and yarn
 
 ## Build & test
 
