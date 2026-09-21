@@ -7,8 +7,9 @@ This track requires the Rust toolchain. It is **optional** and not needed for th
 ## Project layout
 
 - `programs/soulbound-nft/src/lib.rs`: the program entrypoint: declares the program ID and exposes one instruction, `mint_soulbound_nft(name, uri)`, delegating to its handler.
-- `programs/soulbound-nft/src/instructions/mint_soulbound_nft.rs`: the `MintSoulboundNft` accounts struct and the handler, which CPIs into MPL Core using `CreateV2CpiBuilder` from the `mpl-core` Rust SDK (v0.12).
-- `tests/soulbound-nft.ts`: mints an asset, verifies the freeze plugin is active, and asserts that a transfer attempt by the owner fails.
+- `programs/soulbound-nft/src/instructions/mint_soulbound_nft.rs`: the `MintSoulboundNft` accounts struct and the handler, which CPIs into MPL Core using `CreateV2CpiBuilder` from the `mpl-core` Rust SDK (v0.12). **The plugin part of the handler is left as TODOs for you.**
+- `solution/mint_soulbound_nft.rs`: reference handler (spoilers, try it yourself first).
+- `tests/soulbound-nft.ts`: mints an asset, verifies the freeze plugin is active, and asserts that a transfer attempt by the owner fails. These tests fail until you complete the TODOs.
 
 Note: `mpl-core`'s optional `anchor` feature still targets anchor-lang 0.31/0.32, so this project uses the crate's default features. Both crates share the same `solana-account-info` 3.x `AccountInfo`, and all interaction goes through the generated CPI builders.
 
@@ -54,8 +55,9 @@ await program.methods
 
 ## Your task
 
-1. Build and test the program locally (`anchor build && anchor test`).
-2. Deploy it to **devnet**:
+1. Open `programs/soulbound-nft/src/instructions/mint_soulbound_nft.rs` and complete the TODOs: attach the plugin that makes the asset **permanently non-transferable** (which plugin, and which two settings make it permanent?). The [Soulbound Assets guide](https://www.metaplex.com/docs/smart-contracts/core/guides/create-soulbound-nft-asset) has everything you need.
+2. Build and test the program locally (`anchor build && anchor test`) until all tests pass.
+3. Deploy it to **devnet**:
 
 ```bash
 solana config set --url devnet
@@ -65,8 +67,8 @@ anchor build
 anchor deploy --provider.cluster devnet
 ```
 
-3. Write a small client script that calls `mint_soulbound_nft` on your deployed program (see the snippet above) and mint an asset to your wallet.
-4. Check on the explorer that the asset is frozen and cannot be transferred.
+4. Write a small client script that calls `mint_soulbound_nft` on your deployed program (see the snippet above) and mint an asset to your wallet.
+5. Check on the explorer that the asset is frozen and cannot be transferred.
 
 ## Submit (via PR)
 

@@ -1,0 +1,12 @@
+{
+  "name": "fall-school-metaplex-core",
+  "private": true,
+  "workspaces": [
+    "shared",
+    "01-easy-track",
+    "03-bonus-editions"
+  ],
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}

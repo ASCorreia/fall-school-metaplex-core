@@ -21,12 +21,13 @@ A **Metaplex Core** asset is Solana's next-gen NFT standard: a single on-chain a
 
 ```bash
 git clone <this-repo-url>
-cd fall-school-metaplex-core/01-easy-track
-npm install
+cd fall-school-metaplex-core
+npm install          # run once at the repo root: installs every TypeScript track
+cd 01-easy-track
 npm run setup
 ```
 
-`npm run setup` creates a throwaway devnet wallet (`wallet.json`, never commit it or use it for real funds) and requests 1 devnet SOL. If the airdrop is rate-limited, paste your printed address into https://faucet.solana.com.
+`npm run setup` creates a throwaway devnet wallet (`wallet.json` at the repo root, shared by all TypeScript tracks; never commit it or use it for real funds) and requests 1 devnet SOL. If the airdrop is rate-limited, paste your printed address into https://faucet.solana.com.
 
 ## Your task
 
@@ -49,7 +50,7 @@ The default `URI` points to a sample metadata JSON. To use your own image and de
 npm run verify -- <YOUR_ASSET_ADDRESS>
 ```
 
-This checks on-chain that the plugin is attached, frozen, and authority-less, and then actually tries to transfer your NFT away, which must fail. All checks must say `PASS`.
+This checks on-chain that the plugin is attached, frozen, and authority-less, and then actually tries to transfer your NFT away. The transfer must be rejected by MPL Core's freeze check; a failure for any other reason (no SOL, RPC error) does not count. Your wallet needs a little devnet SOL (at least 0.001) for this test. All checks must say `PASS`.
 
 ## Submit
 
@@ -66,6 +67,7 @@ On the explorer page you should see your asset name and the Metaplex Core progra
 - **Airdrop failed / 429**: use https://faucet.solana.com, or ask an instructor to send you devnet SOL.
 - **`fetch failed` / timeout**: devnet RPC hiccup; retry, or set another RPC: `RPC_URL=https://your-rpc npm run mint`.
 - **Transfer succeeds in verify**: your plugin config isn't permanent. Check both `frozen` and `authority`.
+- **Verify says the transfer failed "NOT because of the freeze"**: the test couldn't run properly (usually no SOL or an RPC hiccup). Fund your wallet and re-run.
 - **Stuck?** Read the full error message carefully, re-check the Metaplex guide, or ask an instructor.
 
 ## Done? Bonus challenge

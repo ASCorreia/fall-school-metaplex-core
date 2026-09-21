@@ -5,7 +5,7 @@
 import { generateSigner } from "@metaplex-foundation/umi";
 import { base58 } from "@metaplex-foundation/umi/serializers";
 import { create } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress, explorerTx } from "../scripts/umi";
+import { getUmi, explorerAddress, explorerTx } from "../../shared/umi";
 
 const NAME = "My Soulbound NFT";
 const URI =

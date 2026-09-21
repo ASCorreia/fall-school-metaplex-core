@@ -6,13 +6,16 @@ Hands-on workshop for [Metaplex Core](https://www.metaplex.com/docs/smart-contra
 
 ```
 .
+├── package.json         npm workspace: run `npm install` once here
+├── shared/umi.ts        devnet + wallet helper shared by the TypeScript tracks
 ├── 01-easy-track/       (1) Soulbound NFT with TypeScript / Umi  ← start here
 │   ├── README.md            full step-by-step guide
 │   ├── scripts/             setup wallet → mint (your task) → verify
 │   └── solution/            reference solution (spoilers)
 ├── 02-anchor-track/     (2) Soulbound NFT as a Rust on-chain program (Anchor)
 │   ├── README.md            build, test, deploy to devnet
-│   ├── programs/            the Anchor program
+│   ├── programs/            the Anchor program (your task: complete the TODOs)
+│   ├── solution/            reference handler (spoilers)
 │   └── submissions/         submit your PR here
 └── 03-bonus-editions/   Bonus: Print Editions with different royalties
     ├── README.md            the challenge
@@ -26,7 +29,7 @@ Tracks (1) and (2) build the same thing: a **soulbound (non-transferable) NFT** 
 
 ### (1) Easy track: TypeScript / Umi
 
-No Rust, no Solana CLI. Complete the TODOs in `scripts/2-mint-soulbound.ts` and mint on devnet.
+No Rust, no Solana CLI. Run `npm install` once at the repo root, complete the TODOs in `scripts/2-mint-soulbound.ts` and mint on devnet.
 
 **→ Start with [01-easy-track/README.md](./01-easy-track/README.md)**
 
@@ -34,7 +37,7 @@ No Rust, no Solana CLI. Complete the TODOs in `scripts/2-mint-soulbound.ts` and 
 
 ### (2) Anchor track: Rust on-chain program
 
-The same soulbound mint, but as an Anchor program that CPIs into MPL Core. Requires the Rust + Solana + Anchor toolchain.
+The same soulbound mint, but as an Anchor program that CPIs into MPL Core: you complete the TODOs in the program's handler. Requires the Rust + Solana + Anchor toolchain.
 
 **→ Start with [02-anchor-track/README.md](./02-anchor-track/README.md)**
 

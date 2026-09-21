@@ -11,7 +11,7 @@
  */
 import { generateSigner } from "@metaplex-foundation/umi";
 import { create } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "./umi";
+import { getUmi, explorerAddress } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
 const NAME = "CHANGE ME";

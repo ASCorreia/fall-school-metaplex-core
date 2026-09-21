@@ -11,7 +11,7 @@ const MPL_CORE_PROGRAM_ID = new PublicKey(
   "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
 );
 
-const NAME = "Turbin3 Fall School Diploma";
+const NAME = "Solana Fall School Diploma";
 const URI = "https://arweave.net/diploma.json";
 
 describe("soulbound-nft", () => {
