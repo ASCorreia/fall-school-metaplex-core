@@ -6,7 +6,7 @@
     "lint:fix": "prettier */*.js \"*/**/*{.js,.ts}\" --write"
   },
   "dependencies": {
-    "@anchor-lang/core": "^1.2.0",
+    "@anchor-lang/core": "1.0.2",
     "@metaplex-foundation/mpl-core": "^1.10.0",
     "@metaplex-foundation/umi": "^1.6.0",
     "@metaplex-foundation/umi-bundle-defaults": "^1.6.0",

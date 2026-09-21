@@ -19,7 +19,8 @@ import {
 } from "@metaplex-foundation/mpl-core";
 import { getUmi, explorerAddress } from "../shared/umi";
 
-const URI = "https://example.com/metadata.json"; // your metadata JSON
+const URI =
+  "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
 async function main() {
   const umi = getUmi();
@@ -36,7 +37,63 @@ async function main() {
   //
   // TODO 3: print all 4 explorer links (collection + 3 editions).
   //
-  throw new Error("Not implemented yet: replace this with your code!");
+  const royalties = [250, 500, 1000];
+  const collectionSigner = generateSigner(umi);
+
+  await createCollection(umi, {
+    collection: collectionSigner,
+    name: "Aditya's Master Edition",
+    uri: URI,
+    plugins: [
+      {
+        type: "MasterEdition",
+        maxSupply: 3,
+        name: undefined,
+        uri: undefined,
+      },
+      {
+        type: "Royalties",
+        basisPoints: 500,
+        creators: [{ address: umi.identity.publicKey, percentage: 100 }],
+        ruleSet: ruleSet("None"),
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  console.log("Master Edition collection:", collectionSigner.publicKey.toString());
+  let collection;
+  for (let attempt = 0; attempt < 10; attempt++) {
+    try {
+      collection = await fetchCollection(umi, collectionSigner.publicKey);
+      break;
+    } catch (e) {
+      if (attempt === 9) throw e;
+      await new Promise(resolve => setTimeout(resolve, 2000));
+    }
+  }
+
+  for (let i = 1; i <= 3; i++) {
+    const asset = generateSigner(umi);
+    const basisPoints = royalties[i - 1];
+    await create(umi, {
+      asset,
+      collection,
+      name: `Aditya's Print #${i}`,
+      uri: URI,
+      plugins: [
+        { type: "Edition", number: i },
+        {
+          type: "Royalties",
+          basisPoints,
+          creators: [{ address: umi.identity.publicKey, percentage: 100 }],
+          ruleSet: ruleSet("None"),
+        },
+      ],
+    }).sendAndConfirm(umi);
+
+    console.log(`Edition #${i} (royalty ${basisPoints / 100}%):`);
+    console.log(explorerAddress(asset.publicKey.toString()));
+  }
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 

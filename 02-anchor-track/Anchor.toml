@@ -1,5 +1,5 @@
 [toolchain]
-anchor_version = "1.2.0"
+anchor_version = "1.0.2"
 solana_version = "4.1.2"
 
 [features]
@@ -7,7 +7,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-soulbound_nft = "GA38R9gAWpDQT5djaArDgaW8VSnCg467oWB5sAyYdWtv"
+soulbound_nft = "B1zyy1fTHfzJiLj3XEwx9WisynvAyaHLEWwnuvgvJfD1"
 
 [provider]
 cluster = "Localnet"

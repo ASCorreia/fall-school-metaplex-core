@@ -56,7 +56,10 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         //         plugin, i.e. the asset can never be thawed.
         //         (Hint: which `PluginAuthority` variant is "no one"?)
         //
-        .plugins(vec![])
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
         .invoke()?;
 
