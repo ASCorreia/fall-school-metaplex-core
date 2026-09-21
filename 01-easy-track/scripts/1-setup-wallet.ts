@@ -3,7 +3,7 @@
  * Run: npm run setup
  */
 import { sol } from "@metaplex-foundation/umi";
-import { getUmi, explorerAddress } from "./umi";
+import { getUmi, explorerAddress } from "../../shared/umi";
 
 async function main() {
   const umi = getUmi();

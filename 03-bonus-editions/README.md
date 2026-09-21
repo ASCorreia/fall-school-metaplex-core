@@ -12,12 +12,10 @@ These editions must NOT be soulbound, since royalties only matter for assets tha
 
 ## Setup
 
-Finish the easy track first, then:
+Finish the easy track first. Dependencies are already installed by the `npm install` you ran at the repo root, and this track automatically uses the same funded `wallet.json` (at the repo root) as the easy track:
 
 ```bash
 cd 03-bonus-editions
-npm install
-cp ../01-easy-track/wallet.json .   # reuse your funded devnet wallet
 ```
 
 (No wallet yet? Run `npm run setup` in `01-easy-track` first.)

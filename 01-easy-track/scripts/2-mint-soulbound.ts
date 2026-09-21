@@ -2,7 +2,7 @@
  * Step 2 (YOUR TASK): mint a soulbound NFT on devnet.
  * Run: npm run mint
  *
- * Requirements (see GUIDE.md):
+ * Requirements (see README.md):
  *  - Create a Metaplex Core asset on devnet
  *  - Attach the PermanentFreezeDelegate plugin so it can NEVER be transferred
  *  - Print the asset address and its Solana Explorer link
@@ -11,7 +11,7 @@
  */
 import { generateSigner } from "@metaplex-foundation/umi";
 import { create } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "./umi";
+import { getUmi, explorerAddress } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
 const NAME = "CHANGE ME";

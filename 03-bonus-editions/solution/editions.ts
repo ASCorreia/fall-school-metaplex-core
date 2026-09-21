@@ -1,6 +1,6 @@
 /**
  * BONUS REFERENCE SOLUTION: Print Editions with per-asset royalties.
- * Run: npm run solution:editions
+ * Run: npm run solution
  *
  * Creates a Master Edition collection, then prints 3 Editions into it,
  * each with a DIFFERENT royalty (asset-level Royalties overrides the
@@ -16,7 +16,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../umi";
+import { getUmi, explorerAddress } from "../../shared/umi";
 
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
@@ -32,7 +32,7 @@ async function main() {
   const collectionSigner = generateSigner(umi);
   await createCollection(umi, {
     collection: collectionSigner,
-    name: "Summer School Master Edition",
+    name: "Fall School Master Edition",
     uri: URI,
     plugins: [
       {
@@ -61,7 +61,7 @@ async function main() {
     await create(umi, {
       asset,
       collection,
-      name: `Summer School Print #${i}`,
+      name: `Fall School Print #${i}`,
       uri: URI,
       plugins: [
         { type: "Edition", number: i },

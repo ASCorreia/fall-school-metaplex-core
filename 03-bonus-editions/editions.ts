@@ -17,7 +17,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "./umi";
+import { getUmi, explorerAddress } from "../shared/umi";
 
 const URI = "https://example.com/metadata.json"; // your metadata JSON
 

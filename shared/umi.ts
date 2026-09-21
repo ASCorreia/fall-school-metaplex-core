@@ -1,6 +1,7 @@
 /**
- * Shared helper: creates a Umi instance connected to Solana devnet,
- * loading (or creating) your workshop wallet from `wallet.json`.
+ * Shared helper (used by 01-easy-track and 03-bonus-editions): creates a Umi
+ * instance connected to Solana devnet, loading (or creating) your workshop
+ * wallet from `wallet.json` at the repo root, so every track uses the same wallet.
  * You should NOT need to edit this file.
  */
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
@@ -12,7 +13,7 @@ import path from "node:path";
 export const RPC_URL =
   process.env.RPC_URL ?? "https://api.devnet.solana.com";
 
-const WALLET_PATH = path.join(process.cwd(), "wallet.json");
+const WALLET_PATH = path.resolve(__dirname, "..", "wallet.json");
 
 export function getUmi(): Umi {
   const umi = createUmi(RPC_URL).use(mplCore());
@@ -24,7 +25,7 @@ export function getUmi(): Umi {
     const fresh = generateSigner(umi);
     secretKey = fresh.secretKey;
     fs.writeFileSync(WALLET_PATH, JSON.stringify(Array.from(secretKey)));
-    console.log("Created a new devnet wallet at wallet.json");
+    console.log("Created a new devnet wallet at", WALLET_PATH);
   }
 
   const keypair = umi.eddsa.createKeypairFromSecretKey(secretKey);

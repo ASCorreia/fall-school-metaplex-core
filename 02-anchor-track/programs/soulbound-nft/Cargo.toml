@@ -17,7 +17,7 @@ no-log-ix-name = []
 idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
-anchor-lang = "1.1.2"
+anchor-lang = "1.2.0"
 # NOTE: mpl-core's optional `anchor` feature currently targets anchor-lang
 # 0.31/0.32 only. We intentionally use the default features (solana-program 3.x,
 # which shares the same AccountInfo type as anchor-lang 1.x) and interact with
