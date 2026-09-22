@@ -1,0 +1,11 @@
+{
+  "name": "Portaudit Collection",
+  "symbol": "PRTA",
+  "description": "The original master edition for the Portaudit Fall School print series.",
+  "image": "https://raw.githubusercontent.com/Portaudit/fall-school-metaplex-core/main/03-bonus-editions/1.jpg",
+  "attributes": [],
+  "properties": {
+    "files": [{ "uri": "https://raw.githubusercontent.com/Portaudit/fall-school-metaplex-core/main/03-bonus-editions/1.jpg", "type": "image/jpeg" }],
+    "category": "image"
+  }
+}

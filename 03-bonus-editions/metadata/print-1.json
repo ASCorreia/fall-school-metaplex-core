@@ -1,0 +1,11 @@
+{
+  "name": "Portaudit Print #1",
+  "symbol": "PRTA",
+  "description": "Numbered print #1 of the Portaudit Fall School collection.",
+  "image": "https://raw.githubusercontent.com/Portaudit/fall-school-metaplex-core/main/03-bonus-editions/1.jpg",
+  "attributes": [{ "trait_type": "Edition", "value": "1" }],
+  "properties": {
+    "files": [{ "uri": "https://raw.githubusercontent.com/Portaudit/fall-school-metaplex-core/main/03-bonus-editions/1.jpg", "type": "image/jpeg" }],
+    "category": "image"
+  }
+}
