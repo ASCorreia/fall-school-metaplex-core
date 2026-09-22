@@ -1,0 +1,16 @@
+{
+  "name": "Redhead",
+  "symbol": "SBNFT",
+  "description": "Redhead's soulbound NFT minted at Solana Fall School 2026, permanently bound to my wallet.",
+  "image": "https://raw.githubusercontent.com/fraugonser/fall-school-metaplex-core/feat/soulbound-nft/01-easy-track/assets/redhead.png",
+  "attributes": [
+    {
+      "trait_type": "Event",
+      "value": "Fall School 2026"
+    },
+    {
+      "trait_type": "Student",
+      "value": "Redhead"
+    }
+  ]
+}
