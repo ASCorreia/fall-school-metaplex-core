@@ -5,7 +5,7 @@ import { assert } from "chai";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { keypairIdentity, publicKey } from "@metaplex-foundation/umi";
 import { fetchAsset, transferV1 } from "@metaplex-foundation/mpl-core";
-import { SoulboundNft } from "../target/types/soulbound_nft";
+import type { SoulboundNft } from "../target/types/soulbound_nft";
 
 const MPL_CORE_PROGRAM_ID = new PublicKey(
   "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
@@ -15,7 +15,7 @@ const NAME = "Solana Fall School Diploma";
 const URI = "https://arweave.net/diploma.json";
 
 describe("soulbound-nft", () => {
-  const provider = anchor.AnchorProvider.env();
+  const provider = anchor.AnchorProvider.local();
   anchor.setProvider(provider);
 
   const program = anchor.workspace.SoulboundNft as Program<SoulboundNft>;

@@ -10,11 +10,12 @@
  * Docs: https://www.metaplex.com/docs/smart-contracts/core/guides/create-soulbound-nft-asset
  */
 import { generateSigner } from "@metaplex-foundation/umi";
+import { base58 } from "@metaplex-foundation/umi/serializers";
 import { create } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../../shared/umi";
+import { getUmi, explorerAddress, explorerTx } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "YO_YO_YO_Osotomakanihsotas";
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
@@ -37,7 +38,27 @@ async function main() {
   //
   // TODO 3: Print the asset address and explorerAddress(...) link.
   //
-  throw new Error("Not implemented yet: replace this with your code!");
+  const asset = generateSigner(umi);
+
+  const { signature } = await create(umi, {
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins: [
+      {
+      type: "PermanentFreezeDelegate",
+      frozen: true,
+        authority: { type: "None" },
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  const transaction = base58.deserialize(signature)[0];
+  console.log("Minted soulbound NFT!");
+  console.log("Asset address:", asset.publicKey.toString());
+  console.log("Asset explorer link:", explorerAddress(asset.publicKey.toString()));
+  console.log("Transaction:", explorerTx(transaction));
+
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
