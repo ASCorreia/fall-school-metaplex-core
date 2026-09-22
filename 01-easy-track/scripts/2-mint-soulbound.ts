@@ -9,14 +9,14 @@
  *
  * Docs: https://www.metaplex.com/docs/smart-contracts/core/guides/create-soulbound-nft-asset
  */
-import { generateSigner } from "@metaplex-foundation/umi";
+import { generateSigner, none } from "@metaplex-foundation/umi";
 import { create } from "@metaplex-foundation/mpl-core";
 import { getUmi, explorerAddress } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "Vassil's Soulbound NFT";
 const URI =
-  "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
+  "https://gist.githubusercontent.com/Tarat0r/6bc520067a6085c9e12766ae27c2f05d/raw/df496eb752c74a260d8a375b8cce138b8a9923c9/gistfile1.txt";
 
 async function main() {
   const umi = getUmi();
@@ -27,6 +27,7 @@ async function main() {
   // TODO 1: Every Core asset lives at its own fresh address.
   //         Generate a signer for it with generateSigner(umi).
   //
+  const asset = generateSigner(umi);
   // TODO 2: Call create(umi, { ... }) with:
   //         - asset, name: NAME, uri: URI
   //         - a `plugins` array containing ONE plugin that makes the
@@ -34,10 +35,23 @@ async function main() {
   //           (Hint: PermanentFreezeDelegate. Which two fields make the
   //           freeze permanent?)
   //         Then .sendAndConfirm(umi)
-  //
+  await create(umi, {
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins: [
+      {
+        type: "PermanentFreezeDelegate",
+        frozen: true,
+        authority: { type: "None" },
+      },
+    ],
+  }).sendAndConfirm(umi);
   // TODO 3: Print the asset address and explorerAddress(...) link.
   //
-  throw new Error("Not implemented yet: replace this with your code!");
+  console.log(explorerAddress(asset.publicKey.toString()));
+
+  // throw new Error("Not implemented yet: replace this with your code!");
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 

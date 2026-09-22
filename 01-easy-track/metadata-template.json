@@ -1,10 +1,10 @@
 {
-  "name": "YOUR NFT NAME",
+  "name": "Vassil's Soulbound NFT",
   "symbol": "SBNFT",
   "description": "Soulbound NFT minted at Fall School, bound to my wallet forever.",
-  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "image": "https://github.com/Tarat0r/fall-school-metaplex-core/blob/My-NFT/images/tarator_nft.png?raw=true",
   "attributes": [
     { "trait_type": "Event", "value": "Fall School 2026" },
-    { "trait_type": "Student", "value": "YOUR NAME" }
+    { "trait_type": "Student", "value": "Vassil Vassilev" }
   ]
 }
