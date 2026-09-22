@@ -1,14 +1,5 @@
 /**
- * BONUS CHALLENGE (YOUR TASK): Print Editions with different royalties.
- * Run: npm run editions
- *
- * Requirements (see README.md):
- *  1. Collection with the MasterEdition plugin (maxSupply: 3)
- *     and a collection-level Royalties plugin
- *  2. Three assets printed into it with the Edition plugin (numbers 1-3)
- *  3. Each edition gets a DIFFERENT asset-level Royalties plugin
- *
- * Docs: https://www.metaplex.com/docs/smart-contracts/core/guides/print-editions
+ * BONUS CHALLENGE: Print Editions with different royalties.
  */
 import { generateSigner } from "@metaplex-foundation/umi";
 import {
@@ -18,7 +9,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../shared/umi";
+import { getUmi, explorerAddress } from "../../../shared/umi";
 
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
