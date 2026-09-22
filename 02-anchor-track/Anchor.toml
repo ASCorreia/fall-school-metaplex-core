@@ -9,6 +9,9 @@ skip-lint = false
 [programs.localnet]
 soulbound_nft = "2WzDscQvFFVC5QWvmEJchbckK7NJNTXNk5Y4Mi7AfFTp"
 
+[programs.devnet]
+soulbound_nft = "2WzDscQvFFVC5QWvmEJchbckK7NJNTXNk5Y4Mi7AfFTp"
+
 [provider]
 cluster = "localnet"
 wallet = "~/.config/solana/id.json"
