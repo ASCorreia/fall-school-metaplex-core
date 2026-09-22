@@ -1,63 +1,92 @@
 use anchor_lang::prelude::*;
-// You will need these types for the TODOs below.
-#[allow(unused_imports)]
-use mpl_core::types::{PermanentFreezeDelegate, Plugin, PluginAuthority, PluginAuthorityPair};
-use mpl_core::{instructions::CreateV2CpiBuilder, ID as MPL_CORE_ID};
 
+use mpl_core::{
+    instructions::CreateV2CpiBuilder,
+    types::{
+        PermanentFreezeDelegate,
+        Plugin,
+        PluginAuthority,
+        PluginAuthorityPair,
+    },
+    ID as MPL_CORE_ID,
+};
+
+/// Accounts required to create a soulbound Metaplex Core asset.
 #[derive(Accounts)]
 pub struct MintSoulboundNft<'info> {
-    /// Pays for the asset account rent and transaction fees.
+    /// Pays the rent and transaction costs for creating the asset.
     #[account(mut)]
     pub payer: Signer<'info>,
 
-    /// The new Core asset. A fresh keypair that must co-sign; the account is
-    /// created and initialized by the MPL Core program via CPI.
+    /// The new Core asset account.
+    ///
+    /// Every Core asset has its own address, so the client supplies a
+    /// newly generated keypair that signs the transaction.
     #[account(mut)]
     pub asset: Signer<'info>,
 
-    /// CHECK: The wallet the soul-bound NFT will belong to forever. Any
-    /// account is acceptable; MPL Core only stores its address as the owner.
+    /// The wallet that will permanently own the soulbound NFT.
+    ///
+    /// CHECK: MPL Core only records this account's address as the owner.
+    /// It does not need to read or modify the account.
     pub owner: UncheckedAccount<'info>,
 
-    /// CHECK: Verified against the canonical MPL Core program ID.
+    /// The official Metaplex Core program.
+    ///
+    /// CHECK: The address constraint ensures the caller cannot substitute
+    /// a fake program.
     #[account(address = MPL_CORE_ID)]
     pub mpl_core_program: UncheckedAccount<'info>,
 
+    /// Used by MPL Core when it creates the new asset account.
     pub system_program: Program<'info, System>,
 }
 
-/// Mints a soul-bound (non-transferable) NFT as a Metaplex Core asset.
+/// Creates a permanently non-transferable Metaplex Core NFT.
 ///
-/// YOUR TASK: make the asset soul-bound by attaching the right plugin at
-/// creation time (see the TODOs below). `anchor test` checks your result.
-/// Reference solution: `solution/mint_soulbound_nft.rs` (spoilers).
-pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Result<()> {
-    let mpl_core_program = ctx.accounts.mpl_core_program.to_account_info();
+/// Our Anchor program makes a cross-program invocation into MPL Core's
+/// `CreateV2` instruction. The PermanentFreezeDelegate plugin is attached
+/// during creation because permanent plugins cannot be added afterward.
+pub fn handler(
+    ctx: Context<MintSoulboundNft>,
+    name: String,
+    uri: String,
+) -> Result<()> {
+    // Convert the Anchor accounts into AccountInfo values that the
+    // generated MPL Core CPI builder expects.
+    let mpl_core_program =
+        ctx.accounts.mpl_core_program.to_account_info();
     let asset = ctx.accounts.asset.to_account_info();
     let payer = ctx.accounts.payer.to_account_info();
     let owner = ctx.accounts.owner.to_account_info();
-    let system_program = ctx.accounts.system_program.to_account_info();
+    let system_program =
+        ctx.accounts.system_program.to_account_info();
 
     CreateV2CpiBuilder::new(&mpl_core_program)
+        // Fresh signer representing the new Core asset.
         .asset(&asset)
+        // Wallet paying to create the asset.
         .payer(&payer)
-        // The recipient wallet the NFT is permanently bound to.
+        // Wallet that receives and permanently owns the NFT.
         .owner(Some(&owner))
+        // Required when MPL Core creates the asset account.
         .system_program(&system_program)
+        // On-chain asset information supplied by the client.
         .name(name)
         .uri(uri)
-        // ── YOUR CODE STARTS HERE ────────────────────────────────────────
-        //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
-        //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
-        // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
+        // Attach one permanent freeze plugin during asset creation.
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(
+                PermanentFreezeDelegate {
+                    // The asset begins frozen, preventing transfers.
+                    frozen: true,
+                },
+            ),
+            // Nobody controls this plugin. Because no authority exists,
+            // nobody can thaw or update the asset later.
+            authority: Some(PluginAuthority::None),
+        }])
+        // Invoke the official MPL Core program through CPI.
         .invoke()?;
 
     msg!(
