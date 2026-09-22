@@ -1,44 +1,98 @@
 /**
- * Step 2 (YOUR TASK): mint a soulbound NFT on devnet.
- * Run: npm run mint
+ * Step 2: Mint a soulbound Metaplex Core NFT on Solana devnet.
  *
- * Requirements (see README.md):
- *  - Create a Metaplex Core asset on devnet
- *  - Attach the PermanentFreezeDelegate plugin so it can NEVER be transferred
- *  - Print the asset address and its Solana Explorer link
+ * Run:
+ *   npm run mint
  *
- * Docs: https://www.metaplex.com/docs/smart-contracts/core/guides/create-soulbound-nft-asset
+ * A soulbound NFT stays permanently attached to its owner's wallet.
+ * It cannot be transferred or sold.
  */
+
 import { generateSigner } from "@metaplex-foundation/umi";
 import { create } from "@metaplex-foundation/mpl-core";
 import { getUmi, explorerAddress } from "../../shared/umi";
 
-// Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+/**
+ * The name stored inside the Metaplex Core asset.
+ *
+ * Including my name makes it clear that this is my Solana School
+ * homework asset.
+ */
+const NAME = "Christian's Solana School Soulbound NFT";
+
+/**
+ * This URI points to the off-chain JSON metadata for the asset.
+ *
+ * The metadata contains information such as the image, description,
+ * and other display properties used by wallets and explorers.
+ */
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
 async function main() {
+  /**
+   * Create the Umi client.
+   *
+   * The shared helper connects Umi to Solana devnet and loads the
+   * wallet stored in the repository's wallet.json file.
+   */
   const umi = getUmi();
-  console.log("Minting from wallet:", umi.identity.publicKey.toString());
 
-  // ── YOUR CODE STARTS HERE ────────────────────────────────────────────
-  //
-  // TODO 1: Every Core asset lives at its own fresh address.
-  //         Generate a signer for it with generateSigner(umi).
-  //
-  // TODO 2: Call create(umi, { ... }) with:
-  //         - asset, name: NAME, uri: URI
-  //         - a `plugins` array containing ONE plugin that makes the
-  //           asset frozen forever, with an authority nobody controls.
-  //           (Hint: PermanentFreezeDelegate. Which two fields make the
-  //           freeze permanent?)
-  //         Then .sendAndConfirm(umi)
-  //
-  // TODO 3: Print the asset address and explorerAddress(...) link.
-  //
-  throw new Error("Not implemented yet: replace this with your code!");
-  // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
+  console.log(
+    "Minting from wallet:",
+    umi.identity.publicKey.toString()
+  );
+
+  /**
+   * Every Metaplex Core asset is its own Solana account.
+   *
+   * generateSigner creates a fresh keypair for that new asset account.
+   * This is the address we will later inspect in Solana Explorer.
+   */
+  const asset = generateSigner(umi);
+
+  /**
+   * Create the Metaplex Core asset.
+   *
+   * PermanentFreezeDelegate makes the asset permanently frozen:
+   *
+   * - frozen: true
+   *   The NFT begins in a frozen state.
+   *
+   * - authority: { type: "None" }
+   *   Nobody has permission to unfreeze it later.
+   *
+   * Together, these settings make the NFT soulbound and prevent its
+   * owner—or anyone else—from transferring it to another wallet.
+   */
+  await create(umi, {
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins: [
+      {
+        type: "PermanentFreezeDelegate",
+        frozen: true,
+        authority: {
+          type: "None",
+        },
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  /**
+   * Print the asset address so it can be passed to the verification
+   * script and included with the homework submission.
+   */
+  const assetAddress = asset.publicKey.toString();
+
+  console.log("\nSoulbound NFT created successfully!");
+  console.log("Asset address:", assetAddress);
+  console.log("Explorer:", explorerAddress(assetAddress));
 }
 
-main();
+main().catch((error) => {
+  console.error("\nFailed to mint the soulbound NFT:");
+  console.error(error);
+  process.exit(1);
+});
