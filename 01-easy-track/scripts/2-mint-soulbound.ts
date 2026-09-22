@@ -14,7 +14,7 @@ import { create } from "@metaplex-foundation/mpl-core";
 import { getUmi, explorerAddress } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "Portaudit's Diploma";
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
@@ -23,21 +23,23 @@ async function main() {
   console.log("Minting from wallet:", umi.identity.publicKey.toString());
 
   // ── YOUR CODE STARTS HERE ────────────────────────────────────────────
-  //
-  // TODO 1: Every Core asset lives at its own fresh address.
-  //         Generate a signer for it with generateSigner(umi).
-  //
-  // TODO 2: Call create(umi, { ... }) with:
-  //         - asset, name: NAME, uri: URI
-  //         - a `plugins` array containing ONE plugin that makes the
-  //           asset frozen forever, with an authority nobody controls.
-  //           (Hint: PermanentFreezeDelegate. Which two fields make the
-  //           freeze permanent?)
-  //         Then .sendAndConfirm(umi)
-  //
-  // TODO 3: Print the asset address and explorerAddress(...) link.
-  //
-  throw new Error("Not implemented yet: replace this with your code!");
+  const asset = generateSigner(umi);
+
+  await create(umi, {
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins: [
+      {
+        type: "PermanentFreezeDelegate",
+        frozen: true,
+        authority: { type: "None" },
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  console.log("Asset address:", asset.publicKey.toString());
+  console.log("Explorer:", explorerAddress(asset.publicKey.toString()));
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
