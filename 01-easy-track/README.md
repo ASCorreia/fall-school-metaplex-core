@@ -54,11 +54,8 @@ This checks on-chain that the plugin is attached, frozen, and authority-less, an
 
 ## Submit
 
-Submit your asset's explorer link:
+Submit your asset's explorer link: `https://explorer.solana.com/address/BKGi4D1wJHRETL2Aus5pEqyraZPsK7Z4qWFdAdwFY6x4?cluster=devnet`
 
-```
-https://explorer.solana.com/address/<YOUR_ASSET_ADDRESS>?cluster=devnet
-```
 
 On the explorer page you should see your asset name and the Metaplex Core program as owner. Be ready to explain **why** your NFT cannot be transferred.
 

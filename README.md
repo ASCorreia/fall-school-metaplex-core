@@ -33,7 +33,7 @@ No Rust, no Solana CLI. Run `npm install` once at the repo root, complete the TO
 
 **→ Start with [01-easy-track/README.md](./01-easy-track/README.md)**
 
-**Submit:** your asset's explorer link, `https://explorer.solana.com/address/<ASSET_ADDRESS>?cluster=devnet`
+**Submit:** your asset's explorer link, `https://explorer.solana.com/address/BKGi4D1wJHRETL2Aus5pEqyraZPsK7Z4qWFdAdwFY6x4?cluster=devnet`
 
 ### (2) Anchor track: Rust on-chain program
 

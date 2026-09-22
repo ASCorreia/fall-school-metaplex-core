@@ -1,10 +1,10 @@
 {
-  "name": "YOUR NFT NAME",
+  "name": "LunaticAss",
   "symbol": "SBNFT",
   "description": "Soulbound NFT minted at Fall School, bound to my wallet forever.",
-  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "image": "https://upload.wikimedia.org/wikipedia/sco/7/73/BarksScrooge.jpg?utm_source=sco.wikipedia.org&utm_campaign=index&utm_content=original",
   "attributes": [
     { "trait_type": "Event", "value": "Fall School 2026" },
-    { "trait_type": "Student", "value": "YOUR NAME" }
+    { "trait_type": "Student", "value": "Dweet Parikh" }
   ]
 }
