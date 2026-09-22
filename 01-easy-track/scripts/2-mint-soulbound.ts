@@ -11,10 +11,11 @@
  */
 import { generateSigner } from "@metaplex-foundation/umi";
 import { create } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../../shared/umi";
+import { base58 } from "@metaplex-foundation/umi/serializers";
+import { getUmi, explorerAddress, explorerTx } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "Eshan's Soulbound Fall School NFT";
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
@@ -23,21 +24,41 @@ async function main() {
   console.log("Minting from wallet:", umi.identity.publicKey.toString());
 
   // ── YOUR CODE STARTS HERE ────────────────────────────────────────────
+
+  // Every Core asset lives at its own address, and that address must sign the
+  // creation transaction. It is a throwaway signer: once the asset exists, the
+  // keypair has no further authority over it.
+  const asset = generateSigner(umi);
+
+  // The two fields that make this soulbound are both on PermanentFreezeDelegate:
   //
-  // TODO 1: Every Core asset lives at its own fresh address.
-  //         Generate a signer for it with generateSigner(umi).
+  //   frozen: true          - MPL Core rejects every transfer and burn while set.
+  //   authority: { type: "None" } - nobody holds the authority to update the
+  //                           plugin, so `frozen` can never be flipped back.
   //
-  // TODO 2: Call create(umi, { ... }) with:
-  //         - asset, name: NAME, uri: URI
-  //         - a `plugins` array containing ONE plugin that makes the
-  //           asset frozen forever, with an authority nobody controls.
-  //           (Hint: PermanentFreezeDelegate. Which two fields make the
-  //           freeze permanent?)
-  //         Then .sendAndConfirm(umi)
-  //
-  // TODO 3: Print the asset address and explorerAddress(...) link.
-  //
-  throw new Error("Not implemented yet: replace this with your code!");
+  // Either one alone is not enough. Frozen with an update authority is just a
+  // temporary freeze someone can thaw; authority "None" without frozen locks in
+  // a plugin that is not actually restricting anything.
+  const tx = await create(umi, {
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins: [
+      {
+        type: "PermanentFreezeDelegate",
+        frozen: true,
+        authority: { type: "None" },
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  const signature = base58.deserialize(tx.signature)[0];
+
+  console.log("\nSoulbound asset minted.");
+  console.log("Asset address:", asset.publicKey.toString());
+  console.log("Explorer:     ", explorerAddress(asset.publicKey.toString()));
+  console.log("Transaction:  ", explorerTx(signature));
+
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
