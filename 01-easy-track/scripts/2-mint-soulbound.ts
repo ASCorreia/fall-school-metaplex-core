@@ -10,11 +10,12 @@
  * Docs: https://www.metaplex.com/docs/smart-contracts/core/guides/create-soulbound-nft-asset
  */
 import { generateSigner } from "@metaplex-foundation/umi";
+import { base58 } from "@metaplex-foundation/umi/serializers";
 import { create } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../../shared/umi";
+import { getUmi, explorerAddress, explorerTx } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "SF SCHOOL SOUL - Nico";
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
@@ -26,6 +27,9 @@ async function main() {
   //
   // TODO 1: Every Core asset lives at its own fresh address.
   //         Generate a signer for it with generateSigner(umi).
+
+  const asset = generateSigner(umi);
+
   //
   // TODO 2: Call create(umi, { ... }) with:
   //         - asset, name: NAME, uri: URI
@@ -35,9 +39,24 @@ async function main() {
   //           freeze permanent?)
   //         Then .sendAndConfirm(umi)
   //
-  // TODO 3: Print the asset address and explorerAddress(...) link.
-  //
-  throw new Error("Not implemented yet: replace this with your code!");
+
+  const { signature } = await create(umi, {
+    asset,
+    name: NAME,
+    uri: URI,
+    plugins: [
+      {
+        type: "PermanentFreezeDelegate",
+        frozen: true,
+        authority: { type: "None" },
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  console.log("\nMinted soulbound NFT!");
+  console.log("Asset address:", asset.publicKey.toString());
+  console.log("Asset explorer link:", explorerAddress(asset.publicKey.toString()));
+  console.log("Transaction:", explorerTx(base58.deserialize(signature)[0]));
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
