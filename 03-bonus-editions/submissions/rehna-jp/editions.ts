@@ -1,0 +1,88 @@
+/**
+ * BONUS CHALLENGE (YOUR TASK): Print Editions with different royalties.
+ * Run: npm run editions
+ *
+ * Requirements (see README.md):
+ *  1. Collection with the MasterEdition plugin (maxSupply: 3)
+ *     and a collection-level Royalties plugin
+ *  2. Three assets printed into it with the Edition plugin (numbers 1-3)
+ *  3. Each edition gets a DIFFERENT asset-level Royalties plugin
+ *
+ * Docs: https://www.metaplex.com/docs/smart-contracts/core/guides/print-editions
+ */
+import { generateSigner } from "@metaplex-foundation/umi";
+import {
+  create,
+  createCollection,
+  fetchCollection,
+  ruleSet,
+} from "@metaplex-foundation/mpl-core";
+import { getUmi, explorerAddress } from "../shared/umi";
+
+const URI = "https://example.com/metadata.json"; // your metadata JSON
+
+async function main() {
+  const umi = getUmi();
+  console.log("Wallet:", umi.identity.publicKey.toString());
+
+  // ── YOUR CODE STARTS HERE ────────────────────────────────────────────
+  //
+  // TODO 1: createCollection(umi, { ... }) with the MasterEdition plugin
+  //         (maxSupply: 3) and a Royalties plugin (e.g. basisPoints: 500).
+  //
+  const collectionSigner = generateSigner(umi);
+
+await createCollection(umi, {
+  collection: collectionSigner,
+  name: "Rehna's Fall class Editions",
+  uri: URI,
+  plugins: [
+    { type: "MasterEdition", maxSupply: 3 },
+    {
+      type: "Royalties",
+      basisPoints: 500,
+      creators: [{ address: umi.identity.publicKey, percentage: 100 }],
+      ruleSet: ruleSet("None"),
+    },
+  ],
+}).sendAndConfirm(umi);
+console.log("\nMaster Edition collection:", collectionSigner.publicKey.toString());
+console.log(explorerAddress(collectionSigner.publicKey.toString()));
+
+ console.log("\nWaiting for devnet to catch up...");
+  await new Promise((resolve) => setTimeout(resolve, 15000));
+  // TODO 2: fetchCollection(...), then in a loop create 3 assets with:
+  //         - the Edition plugin (number: 1, 2, 3)
+  //         - a Royalties plugin with a DIFFERENT basisPoints each
+  //
+  const collection = await fetchCollection(umi, collectionSigner.publicKey);
+const ROYALTIES = [250, 500, 1000];
+
+for (let i = 1; i <= 3; i++) {
+  const asset = generateSigner(umi);
+  await create(umi, {
+    asset,
+    collection,
+    name: `... #${i}`,
+    uri: URI,
+    plugins: [
+      // 1. the Edition plugin with this print's number
+       { type: "Edition", number: i },
+      // 2. a Royalties plugin using ROYALTIES[i - 1]
+      {
+        type: "Royalties",
+        basisPoints: ROYALTIES[i - 1],
+        creators: [{ address: umi.identity.publicKey, percentage: 100 }],
+        ruleSet: ruleSet("None"),
+      },
+    ],
+  }).sendAndConfirm(umi, { confirm: { commitment: "finalized" } })
+
+  // TODO 3: print all 4 explorer links (collection + 3 editions).
+  //
+  console.log(`Edition #${i}: https://explorer.solana.com/address/${asset.publicKey.toString()}?cluster=devnet`);
+}
+
+}
+
+main();
