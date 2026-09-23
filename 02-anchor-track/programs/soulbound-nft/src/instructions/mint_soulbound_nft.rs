@@ -47,16 +47,10 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         .name(name)
         .uri(uri)
         // ── YOUR CODE STARTS HERE ────────────────────────────────────────
-        //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
-        //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
         .invoke()?;
 

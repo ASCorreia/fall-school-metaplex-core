@@ -1,10 +1,10 @@
 {
-  "name": "YOUR NFT NAME",
+  "name": "Solana Soul Bond Token",
   "symbol": "SBNFT",
   "description": "Soulbound NFT minted at Fall School, bound to my wallet forever.",
-  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "image": "https://bafybeifd3xbghcfcc4vulfp3glpe5r3mcj6c4zgqbvhdxqxshp6yjvcneu.ipfs.inbrowser.link/",
   "attributes": [
     { "trait_type": "Event", "value": "Fall School 2026" },
-    { "trait_type": "Student", "value": "YOUR NAME" }
+    { "trait_type": "Student", "value": "Mdock" }
   ]
 }

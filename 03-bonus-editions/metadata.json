@@ -1,0 +1,23 @@
+{
+  "name": "Eclipse Press",
+  "symbol": "ECLPS",
+  "description": "Master painting for a three-print edition, made at Solana Fall School 2026. The collection carries a default royalty; each numbered print overrides it with its own.",
+  "image": "https://files.catbox.moe/pnvukd.png",
+  "external_url": "https://www.metaplex.com/docs/smart-contracts/core/guides/print-editions",
+  "attributes": [
+    { "trait_type": "Series", "value": "Eclipse Press" },
+    { "trait_type": "Medium", "value": "Pigment print" },
+    { "trait_type": "Supply", "value": "3" },
+    { "trait_type": "Event", "value": "Fall School 2026" },
+    { "trait_type": "Artist", "value": "Mdock" }
+  ],
+  "properties": {
+    "files": [
+      {
+        "uri": "https://files.catbox.moe/pnvukd.png",
+        "type": "image/png"
+      }
+    ],
+    "category": "image"
+  }
+}

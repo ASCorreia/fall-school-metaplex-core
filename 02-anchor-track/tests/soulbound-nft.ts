@@ -12,7 +12,8 @@ const MPL_CORE_PROGRAM_ID = new PublicKey(
 );
 
 const NAME = "Solana Fall School Diploma";
-const URI = "https://arweave.net/diploma.json";
+const URI =
+  "https://gist.githubusercontent.com/fribas84/bbc7406d241d4a3d5c027d2a17dea0bf/raw/50ea4ec706bef923bc12abe36dfddcbc9ffff3cb/gistfile1.txt";
 
 describe("soulbound-nft", () => {
   const provider = anchor.AnchorProvider.env();
