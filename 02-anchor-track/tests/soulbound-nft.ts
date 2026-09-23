@@ -5,7 +5,7 @@ import { assert } from "chai";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { keypairIdentity, publicKey } from "@metaplex-foundation/umi";
 import { fetchAsset, transferV1 } from "@metaplex-foundation/mpl-core";
-import { SoulboundNft } from "../target/types/soulbound_nft";
+import { SoulboundNft } from "../target/types/soulbound_nft.js";
 
 const MPL_CORE_PROGRAM_ID = new PublicKey(
   "CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d",
@@ -28,7 +28,8 @@ describe("soulbound-nft", () => {
   const umi = () => createUmi(provider.connection.rpcEndpoint);
 
   it("mints a soul-bound Core NFT", async () => {
-    await program.methods
+    // await program.methods
+    const tx = await program.methods
       .mintSoulboundNft(NAME, URI)
       .accountsPartial({
         payer: provider.wallet.publicKey,
@@ -39,6 +40,8 @@ describe("soulbound-nft", () => {
       })
       .signers([asset])
       .rpc();
+      console.log("Mint tx signature:", tx);
+      console.log("Expected asset:", asset.publicKey.toString());
 
     // The asset account exists and is owned by the MPL Core program.
     const info = await provider.connection.getAccountInfo(asset.publicKey);
