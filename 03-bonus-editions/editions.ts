@@ -21,7 +21,7 @@ import {
 import { getUmi, explorerAddress } from "../shared/umi";
 
 const URI =
-  "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
+  "https://raw.githubusercontent.com/penumbraaasol/fall-school-metaplex-core/feat/soulbound-nft/01-easy-track/assets/daqs-print.json";
 
 const COLLECTION_NAME = "Anna's Fall School Prints";
 const MAX_SUPPLY = 3;

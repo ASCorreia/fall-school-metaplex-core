@@ -15,7 +15,7 @@ const MPL_CORE = new PublicKey("CoREENxT6tW1HoK8ypY1SxRMZTcVPm7R94rH4PZNhX7d");
 
 const NAME = "Anna's Solana Fall School Diploma";
 const URI =
-  "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
+  "https://raw.githubusercontent.com/penumbraaasol/fall-school-metaplex-core/feat/soulbound-nft/01-easy-track/assets/daqs-diploma.json";
 
 async function main() {
   // Reads ANCHOR_PROVIDER_URL and ANCHOR_WALLET from the environment.

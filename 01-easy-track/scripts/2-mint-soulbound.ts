@@ -16,7 +16,7 @@ import { getUmi, explorerAddress } from "../../shared/umi";
 // Personalize these! NAME should include your name or nickname.
 const NAME = "Anna's Solana Fall School Diploma";
 const URI =
-  "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
+  "https://raw.githubusercontent.com/penumbraaasol/fall-school-metaplex-core/feat/soulbound-nft/01-easy-track/assets/daqs-diploma.json";
 
 async function main() {
   const umi = getUmi();
