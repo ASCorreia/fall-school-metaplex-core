@@ -57,10 +57,16 @@ This checks on-chain that the plugin is attached, frozen, and authority-less, an
 Submit your asset's explorer link:
 
 ```
-https://explorer.solana.com/address/<YOUR_ASSET_ADDRESS>?cluster=devnet
+https://explorer.solana.com/address/7drJXFMxSND6bhrvkCvPK4HjrCeJjeqc3d1B2RRgAAhY?cluster=devnet
 ```
 
 On the explorer page you should see your asset name and the Metaplex Core program as owner. Be ready to explain **why** your NFT cannot be transferred.
+
+## My Solution
+
+This asset cannot be transferred because it has the `PermanentFreezeDelegate` plugin attached with `frozen: true`, which blocks all transfers and burns. Furthermore, the plugin's `authority` is set to `None`, meaning nobody (not even the creator) has the permission to ever unfreeze it, making the lock permanent.
+
+Asset Explorer Link: https://explorer.solana.com/address/7drJXFMxSND6bhrvkCvPK4HjrCeJjeqc3d1B2RRgAAhY?cluster=devnet
 
 ## Troubleshooting
 
