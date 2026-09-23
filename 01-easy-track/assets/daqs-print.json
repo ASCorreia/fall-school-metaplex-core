@@ -1,0 +1,11 @@
+{
+  "name": "Anna's Fall School Prints",
+  "symbol": "DAQS",
+  "description": "Numbered print edition from Solana Fall School 2026. Transferable and resellable - each print carries its own royalty.",
+  "image": "https://raw.githubusercontent.com/penumbraaasol/fall-school-metaplex-core/feat/soulbound-nft/01-easy-track/assets/daqs-coin.png",
+  "attributes": [
+    { "trait_type": "Event", "value": "Fall School 2026" },
+    { "trait_type": "Type", "value": "Print Edition" },
+    { "trait_type": "Project", "value": "$DAQS" }
+  ]
+}

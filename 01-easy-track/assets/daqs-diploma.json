@@ -1,0 +1,12 @@
+{
+  "name": "Anna's Solana Fall School Diploma",
+  "symbol": "SBNFT",
+  "description": "Soulbound NFT minted at Solana Fall School 2026. Permanently bound to my wallet - it can never be transferred or sold.",
+  "image": "https://raw.githubusercontent.com/penumbraaasol/fall-school-metaplex-core/feat/soulbound-nft/01-easy-track/assets/daqs-coin.png",
+  "attributes": [
+    { "trait_type": "Event", "value": "Fall School 2026" },
+    { "trait_type": "Student", "value": "Anna" },
+    { "trait_type": "Type", "value": "Soulbound" },
+    { "trait_type": "Project", "value": "$DAQS" }
+  ]
+}
