@@ -1,6 +1,4 @@
 use anchor_lang::prelude::*;
-// You will need these types for the TODOs below.
-#[allow(unused_imports)]
 use mpl_core::types::{PermanentFreezeDelegate, Plugin, PluginAuthority, PluginAuthorityPair};
 use mpl_core::{instructions::CreateV2CpiBuilder, ID as MPL_CORE_ID};
 
@@ -56,7 +54,10 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         //         plugin, i.e. the asset can never be thawed.
         //         (Hint: which `PluginAuthority` variant is "no one"?)
         //
-        .plugins(vec![])
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
         .invoke()?;
 
