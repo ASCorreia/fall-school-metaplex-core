@@ -1,8 +1,8 @@
 /**
- * BONUS CHALLENGE (YOUR TASK): Print Editions with different royalties.
+ * BONUS CHALLENGE: Print Editions with different royalties.
  * Run: npm run editions
  *
- * Requirements (see README.md):
+ * Requirements:
  *  1. Collection with the MasterEdition plugin (maxSupply: 3)
  *     and a collection-level Royalties plugin
  *  2. Three assets printed into it with the Edition plugin (numbers 1-3)
@@ -17,7 +17,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../shared/umi";
+import { getUmi, explorerAddress } from "../../../shared/umi";
 
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
@@ -29,8 +29,7 @@ async function main() {
   const umi = getUmi();
   console.log("Wallet:", umi.identity.publicKey.toString());
 
-  // ── YOUR CODE STARTS HERE ────────────────────────────────────────────
-  // 1. Collection with the MasterEdition plugin (the "original painting")
+  // 1. Collection with the MasterEdition plugin
   const collectionSigner = generateSigner(umi);
   await createCollection(umi, {
     collection: collectionSigner,
@@ -40,11 +39,10 @@ async function main() {
       {
         type: "MasterEdition",
         maxSupply: 3,
-        name: undefined, // inherit from collection
+        name: undefined,
         uri: undefined,
       },
       {
-        // collection-level default royalty (5%)
         type: "Royalties",
         basisPoints: 500,
         creators: [{ address: umi.identity.publicKey, percentage: 100 }],
@@ -79,7 +77,6 @@ async function main() {
       plugins: [
         { type: "Edition", number: i },
         {
-          // asset-level royalty OVERRIDES the collection-level one
           type: "Royalties",
           basisPoints: ROYALTIES[i - 1],
           creators: [{ address: umi.identity.publicKey, percentage: 100 }],
@@ -93,7 +90,6 @@ async function main() {
     );
     console.log(explorerAddress(asset.publicKey.toString()));
   }
-  // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
 main();
