@@ -1,6 +1,6 @@
 /**
  * BONUS CHALLENGE (YOUR TASK): Print Editions with different royalties.
- * Run: npm run editions
+ * Run from 03-bonus-editions: npx tsx submissions/zaialamm/editions.ts
  *
  * Requirements (see README.md):
  *  1. Collection with the MasterEdition plugin (maxSupply: 3)
@@ -18,7 +18,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../shared/umi";
+import { getUmi, explorerAddress } from "../../../shared/umi";
 
 const URI =
   "https://gist.githubusercontent.com/zaialamm/213830f29409d1816fda07c27b162f87/raw/zai-metadata.json"; // your metadata JSON
