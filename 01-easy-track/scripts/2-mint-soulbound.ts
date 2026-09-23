@@ -14,7 +14,7 @@ import { create } from "@metaplex-foundation/mpl-core";
 import { getUmi, explorerAddress } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "CHANGE ME";
+const NAME = "Faruk";
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
 
@@ -37,7 +37,23 @@ async function main() {
   //
   // TODO 3: Print the asset address and explorerAddress(...) link.
   //
-  throw new Error("Not implemented yet: replace this with your code!");
+    const asset = generateSigner(umi);
+
+    await create(umi, {
+    asset,
+    name: 'Faruk',
+    uri: 'https://gist.github.com/farooq13/b411117ffff1c76817c898bdc82e506f',
+    plugins: [
+      {
+        type: "PermanentFreezeDelegate",
+        frozen: true,
+        authority: { type: 'None' },
+      },
+    ],
+  }).sendAndConfirm(umi);
+
+  console.log("Asset address:", asset.publicKey.toString());
+  console.log("Explorer link:", explorerAddress(asset.publicKey.toString()));
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
