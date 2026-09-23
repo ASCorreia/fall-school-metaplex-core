@@ -1,0 +1,11 @@
+{
+  "name": "Zai as Hiro Hamada",
+  "symbol": "SBNFT",
+  "description": "Soulbound NFT minted at Solana Fall School, bound to my wallet forever.",
+  "image": "https://raw.githubusercontent.com/zaialamm/create-nft-solana/refs/heads/main/Hiro-Hamada.jpg",
+  "attributes": [
+    { "trait_type": "Event", "value": "Fall School 2026" },
+    { "trait_type": "Student", "value": "Zai Alam" },
+    { "trait_type": "Character", "value": "Hiro Hamada" }
+  ]
+}
