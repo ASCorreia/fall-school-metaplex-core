@@ -48,15 +48,17 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         .uri(uri)
         // ── YOUR CODE STARTS HERE ────────────────────────────────────────
         //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
+        // The Rust twin of the TypeScript plugin config:
+        //   { type: "PermanentFreezeDelegate", frozen: true, authority: { type: "None" } }
         //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
+        // TODO 1: PermanentFreezeDelegate created already frozen, so MPL Core
+        //         rejects every transfer and burn from the moment it exists.
+        // TODO 2: PluginAuthority::None, so nobody can ever update the plugin
+        //         and therefore nobody can ever thaw the asset.
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
         .invoke()?;
 
