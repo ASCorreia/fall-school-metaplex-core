@@ -1,15 +1,3 @@
-/**
- * BONUS CHALLENGE (YOUR TASK): Print Editions with different royalties.
- * Run: npm run editions
- *
- * Requirements (see README.md):
- *  1. Collection with the MasterEdition plugin (maxSupply: 3)
- *     and a collection-level Royalties plugin
- *  2. Three assets printed into it with the Edition plugin (numbers 1-3)
- *  3. Each edition gets a DIFFERENT asset-level Royalties plugin
- *
- * Docs: https://www.metaplex.com/docs/smart-contracts/core/guides/print-editions
- */
 import { generateSigner } from "@metaplex-foundation/umi";
 import {
   create,
@@ -17,7 +5,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../shared/umi";
+import { getUmi, explorerAddress } from "../../shared/umi";
 
 const URI =
   "https://raw.githubusercontent.com/solana-developers/opos-asset/main/assets/DeveloperPortal/metadata.json";
@@ -29,10 +17,7 @@ async function main() {
   const umi = getUmi();
   console.log("Wallet:", umi.identity.publicKey.toString());
 
-  // ── YOUR CODE STARTS HERE ────────────────────────────────────────────
-  //
-  // TODO 1: createCollection(umi, { ... }) with the MasterEdition plugin
-  //         (maxSupply: 3) and a Royalties plugin (e.g. basisPoints: 500).
+  // 1. Collection with the MasterEdition plugin
   const collectionSigner = generateSigner(umi);
   await createCollection(umi, {
     collection: collectionSigner,
@@ -56,9 +41,7 @@ async function main() {
   console.log("\nMaster Edition collection:", collectionSigner.publicKey.toString());
   console.log(explorerAddress(collectionSigner.publicKey.toString()));
 
-  // TODO 2: fetchCollection(...), then in a loop create 3 assets with:
-  //         - the Edition plugin (number: 1, 2, 3)
-  //         - a Royalties plugin with a DIFFERENT basisPoints each
+  // 2. Fetch collection with retry for devnet indexing
   let collection;
   for (let attempt = 0; attempt < 5; attempt++) {
     try {
@@ -73,6 +56,7 @@ async function main() {
     collection = await fetchCollection(umi, collectionSigner.publicKey);
   }
 
+  // 3. Print 3 Editions, each with its own royalty
   for (let i = 1; i <= 3; i++) {
     const asset = generateSigner(umi);
     await create(umi, {
@@ -91,14 +75,12 @@ async function main() {
       ],
     }).sendAndConfirm(umi);
 
-    // TODO 3: print all 4 explorer links (collection + 3 editions).
     console.log(
       `\nEdition #${i} (royalty ${ROYALTIES[i - 1] / 100}%):`,
       asset.publicKey.toString()
     );
     console.log(explorerAddress(asset.publicKey.toString()));
   }
-  // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
 
 main();
