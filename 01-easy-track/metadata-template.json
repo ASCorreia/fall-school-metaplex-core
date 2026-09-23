@@ -1,10 +1,10 @@
 {
-  "name": "YOUR NFT NAME",
-  "symbol": "SBNFT",
+  "name": "NightFox",
+  "symbol": "NFOX",
   "description": "Soulbound NFT minted at Fall School, bound to my wallet forever.",
-  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "image": "https://gateway.pinata.cloud/ipfs/bafkreiblgoywu6to3rrcfsyoktunm7nzomoah6i3t35juqlutxjuw4746q",
   "attributes": [
     { "trait_type": "Event", "value": "Fall School 2026" },
-    { "trait_type": "Student", "value": "YOUR NAME" }
+    { "trait_type": "Student", "value": "Laolu" }
   ]
 }

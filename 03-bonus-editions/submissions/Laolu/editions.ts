@@ -18,7 +18,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../shared/umi";
+import { getUmi, explorerAddress } from "../../../shared/umi";
 
 const URI = "https://gist.githubusercontent.com/Laolu02/03d624006deefaa245c53fef1e85d799/raw/82d41a2b18d8479e7a9d998d5d158e8f49f79483/gistfile1.txt"; // your metadata JSON
 

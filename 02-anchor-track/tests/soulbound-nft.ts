@@ -4,7 +4,7 @@ import { Keypair, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { assert } from "chai";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { keypairIdentity, publicKey } from "@metaplex-foundation/umi";
-import { fetchAsset, transferV1 } from "@metaplex-foundation/mpl-core";
+import { fetchAssetV1, transferV1 } from "@metaplex-foundation/mpl-core";
 import { SoulboundNft } from "../target/types/soulbound_nft";
 
 const MPL_CORE_PROGRAM_ID = new PublicKey(
@@ -12,7 +12,7 @@ const MPL_CORE_PROGRAM_ID = new PublicKey(
 );
 
 const NAME = "Solana Fall School Diploma";
-const URI = "https://arweave.net/diploma.json";
+const URI = "https://gist.githubusercontent.com/Laolu02/03d624006deefaa245c53fef1e85d799/raw/82d41a2b18d8479e7a9d998d5d158e8f49f79483/gistfile1.txt";
 
 describe("soulbound-nft", () => {
   const provider = anchor.AnchorProvider.env();
@@ -49,10 +49,28 @@ describe("soulbound-nft", () => {
     );
 
     // The PermanentFreezeDelegate plugin is present and frozen.
-    const coreAsset = await fetchAsset(
-      umi(),
-      publicKey(asset.publicKey.toBase58()),
-    );
+    let coreAsset;
+
+      for (let attempt = 1; attempt <= 10; attempt += 1) {
+        try {
+          coreAsset = await fetchAssetV1(
+            umi(),
+            publicKey(asset.publicKey.toBase58()),
+          );
+          break;
+        } catch (error) {
+          if (attempt === 10) {
+            throw error;
+          }
+
+          await new Promise((resolve) => setTimeout(resolve, 2_000));
+        }
+      }
+
+      if (!coreAsset) {
+        throw new Error("Failed to fetch Core asset");
+      }
+
     assert.equal(coreAsset.name, NAME);
     assert.equal(coreAsset.uri, URI);
     assert.equal(coreAsset.owner, publicKey(holder.publicKey.toBase58()));
