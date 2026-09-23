@@ -52,7 +52,6 @@ async function main() {
   // TODO 3: Print the asset address and explorerAddress(...) link.
   //
   const assetPubKey = asset.publicKey.toString();
-  console.log(assetPubKey);
   explorerAddress(assetPubKey)
   // ── YOUR CODE ENDS HERE ──────────────────────────────────────────────
 }
