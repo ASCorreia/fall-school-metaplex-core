@@ -1,8 +1,8 @@
 {
-  "name": "YOUR NFT NAME",
-  "symbol": "SBNFT",
-  "description": "Soulbound NFT minted at Fall School, bound to my wallet forever.",
-  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "name": "MOODI JI",
+  "symbol": "NAMO",
+  "description": "Moodi ji with his laser eyes cannot be defeated. Superpower!",
+  "image": "https://i1.sndcdn.com/artworks-000533661657-yqeoag-t500x500.jpg",
   "attributes": [
     { "trait_type": "Event", "value": "Fall School 2026" },
     { "trait_type": "Student", "value": "YOUR NAME" }
