@@ -28,9 +28,10 @@ pub struct MintSoulboundNft<'info> {
 
 /// Mints a soul-bound (non-transferable) NFT as a Metaplex Core asset.
 ///
-/// YOUR TASK: make the asset soul-bound by attaching the right plugin at
-/// creation time (see the TODOs below). `anchor test` checks your result.
-/// Reference solution: `solution/mint_soulbound_nft.rs` (spoilers).
+/// The asset is created via a CPI into MPL Core's `CreateV2` with the
+/// `PermanentFreezeDelegate` plugin attached at creation time:
+///   - `frozen: true`              -> born frozen, transfers and burns rejected
+///   - `PluginAuthority::None`     -> nobody can ever thaw it
 pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Result<()> {
     let mpl_core_program = ctx.accounts.mpl_core_program.to_account_info();
     let asset = ctx.accounts.asset.to_account_info();
@@ -46,18 +47,16 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         .system_program(&system_program)
         .name(name)
         .uri(uri)
-        // ── YOUR CODE STARTS HERE ────────────────────────────────────────
-        //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
-        //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
-        // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
+        // The soul-bound part: attach the PermanentFreezeDelegate plugin,
+        // already frozen, with no authority so it can never be thawed.
+        .plugins(vec![PluginAuthorityPair {
+            // Plugin that keeps the asset frozen: MPL Core then rejects every
+            // transfer and every burn of this asset.
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            // No authority at all: nobody (not even the update authority) can
+            // ever thaw it, so the NFT stays bound to its wallet forever.
+            authority: Some(PluginAuthority::None),
+        }])
         .invoke()?;
 
     msg!(
