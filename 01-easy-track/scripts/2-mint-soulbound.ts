@@ -4,9 +4,9 @@ import { create } from "@metaplex-foundation/mpl-core";
 import { getUmi, explorerAddress } from "../../shared/umi";
 
 // Personalize these! NAME should include your name or nickname.
-const NAME = "Kundan";
+const NAME = "Hey Jude";
 const URI =
-  "https://gist.githubusercontent.com/Kundankr30/fa83fd17b493692e98b7908f6e190743/raw/cbf7f7394cea6ff2132ebca03507022d560f47c5/gistfile1.txt";
+  "https://gist.githubusercontent.com/Kundankr30/fa83fd17b493692e98b7908f6e190743/raw/428f8cf3614717bf54eebaa9c28a671ab6c5bd09/gistfile1.txt";
 
 async function main() {
   const umi = getUmi();
@@ -27,5 +27,4 @@ async function main() {
   console.log("Asset address:", asset.publicKey.toString());
   console.log(explorerAddress(asset.publicKey.toString()));
 }
-
 main();
