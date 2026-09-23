@@ -46,6 +46,13 @@ Print #3: ai7meXUGJfpFhXct4NFs8LwTvAcEFUaT3RJ2oV39EFA  (edition 3, royalty 1000 
 The collection carries `MasterEdition { maxSupply: 3 }`, so the three prints
 are the whole run.
 
+## Artwork
+
+The collection and prints carry the $DAQS mark, with metadata served from this
+repo (`01-easy-track/assets/daqs-print.json`). It is a separate file from the
+diploma's: the prints are deliberately not soulbound, so the diploma's "bound
+to my wallet forever" description would be false on them.
+
 ## One note on the script
 
 `editions.ts` wraps `fetchCollection` and `fetchAsset` in a short retry. On

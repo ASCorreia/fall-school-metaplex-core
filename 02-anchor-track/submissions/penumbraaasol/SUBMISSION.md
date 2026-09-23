@@ -67,6 +67,18 @@ Note the track 1 verifier reports `SKIP` on its transfer test for this asset —
 it only attempts the transfer when `wallet.json` is the owner, and this asset is
 owned by the Anchor CLI wallet that deployed the program.
 
+## Artwork
+
+The asset carries the $DAQS mark, with metadata and image served from this
+repo (`01-easy-track/assets/daqs-diploma.json` and `daqs-coin.png`) rather than
+an external Gist — one fewer service to outlive the NFT.
+
+The URI was set on the already-minted asset with Core's `update`, not by
+re-minting: `PermanentFreezeDelegate` gates transfer and burn, while the URI is
+gated by the update authority, so the explorer link above is the original mint
+and the freeze was never disturbed. The verifier still returns all five PASS
+lines after the change.
+
 ## Files
 
 ```
