@@ -1,6 +1,4 @@
 use anchor_lang::prelude::*;
-// You will need these types for the TODOs below.
-#[allow(unused_imports)]
 use mpl_core::types::{PermanentFreezeDelegate, Plugin, PluginAuthority, PluginAuthorityPair};
 use mpl_core::{instructions::CreateV2CpiBuilder, ID as MPL_CORE_ID};
 
@@ -28,9 +26,8 @@ pub struct MintSoulboundNft<'info> {
 
 /// Mints a soul-bound (non-transferable) NFT as a Metaplex Core asset.
 ///
-/// YOUR TASK: make the asset soul-bound by attaching the right plugin at
-/// creation time (see the TODOs below). `anchor test` checks your result.
-/// Reference solution: `solution/mint_soulbound_nft.rs` (spoilers).
+/// The asset is made soul-bound by attaching the `PermanentFreezeDelegate`
+/// plugin at creation time. `anchor test` checks the result.
 pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Result<()> {
     let mpl_core_program = ctx.accounts.mpl_core_program.to_account_info();
     let asset = ctx.accounts.asset.to_account_info();
@@ -48,15 +45,13 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         .uri(uri)
         // ── YOUR CODE STARTS HERE ────────────────────────────────────────
         //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
-        //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
+        // PermanentFreezeDelegate makes the asset soul-bound:
+        //  - frozen: true           -> born frozen, transfers and burns are rejected
+        //  - PluginAuthority::None  -> nobody can ever thaw it, so it stays frozen
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
         .invoke()?;
 
