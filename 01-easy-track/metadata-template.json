@@ -1,8 +1,8 @@
 {
-  "name": "YOUR NFT NAME",
+  "name": "Lets Go",
   "symbol": "SBNFT",
   "description": "Soulbound NFT minted at Fall School, bound to my wallet forever.",
-  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "image": "https://ih1.redbubble.net/image.599364385.2619/raf,360x360,075,t,fafafa:ca443f4786.u15.jpg",
   "attributes": [
     { "trait_type": "Event", "value": "Fall School 2026" },
     { "trait_type": "Student", "value": "YOUR NAME" }
