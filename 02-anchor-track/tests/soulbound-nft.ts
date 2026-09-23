@@ -25,10 +25,16 @@ describe("soulbound-nft", () => {
   // The wallet the NFT gets permanently bound to.
   const holder = Keypair.generate();
 
-  const umi = () => createUmi(provider.connection.rpcEndpoint);
+  // AnchorProvider hardcodes `processed` commitment, while a bare
+  // createUmi(endpoint) sends no commitment at all and so reads at the RPC
+  // default, `finalized`. Writing at `processed` and reading at `finalized`
+  // is a race the test loses: the account exists, just not yet at that
+  // commitment. Pin the reader, and wait for the writer to reach it.
+  const COMMITMENT = "confirmed" as const;
+  const umi = () => createUmi(provider.connection.rpcEndpoint, COMMITMENT);
 
   it("mints a soul-bound Core NFT", async () => {
-    await program.methods
+    const signature = await program.methods
       .mintSoulboundNft(NAME, URI)
       .accountsPartial({
         payer: provider.wallet.publicKey,
@@ -39,6 +45,8 @@ describe("soulbound-nft", () => {
       })
       .signers([asset])
       .rpc();
+
+    await provider.connection.confirmTransaction(signature, COMMITMENT);
 
     // The asset account exists and is owned by the MPL Core program.
     const info = await provider.connection.getAccountInfo(asset.publicKey);
