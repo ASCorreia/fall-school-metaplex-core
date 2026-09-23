@@ -1,5 +1,5 @@
 /**
- * BONUS CHALLENGE (YOUR TASK): Print Editions with different royalties.
+ * BONUS CHALLENGE: Print Editions with different royalties.
  * Run: npm run editions
  *
  * Requirements (see README.md):
@@ -17,7 +17,7 @@ import {
   fetchCollection,
   ruleSet,
 } from "@metaplex-foundation/mpl-core";
-import { getUmi, explorerAddress } from "../shared/umi";
+import { getUmi, explorerAddress } from "../../../shared/umi";
 
 const URI =
   "https://gist.githubusercontent.com/VedanshShuklaa/9d58706a42892a0ec6010a18ce609bd4/raw/17ffd24858a58676e5ad4516e221a545c44354b4/print-collection.json";
@@ -45,18 +45,7 @@ async function main() {
 
   console.log("Collection:", explorerAddress(collectionSigner.publicKey.toString()));
 
-  // Read-after-write on devnet can briefly lag the RPC node that confirmed
-  // the transaction, so retry a few times before giving up.
-  let collection;
-  for (let attempt = 1; ; attempt++) {
-    try {
-      collection = await fetchCollection(umi, collectionSigner.publicKey);
-      break;
-    } catch (err) {
-      if (attempt >= 5) throw err;
-      await new Promise((r) => setTimeout(r, 1500));
-    }
-  }
+  const collection = await fetchCollection(umi, collectionSigner.publicKey);
   const ROYALTIES = [250, 500, 1000];
 
   for (let i = 1; i <= 3; i++) {
