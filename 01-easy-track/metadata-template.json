@@ -1,8 +1,8 @@
 {
-  "name": "YOUR NFT NAME",
+  "name": "Toyoabasi Eton",
   "symbol": "SBNFT",
   "description": "Soulbound NFT minted at Fall School, bound to my wallet forever.",
-  "image": "https://PUT-A-PUBLIC-IMAGE-URL-HERE.png",
+  "image": "https://github.com/toyoeton/pfp/ba7f934d740781d7a2c7a6f05e09627049f48f6d/typfp.jpg",
   "attributes": [
     { "trait_type": "Event", "value": "Fall School 2026" },
     { "trait_type": "Student", "value": "YOUR NAME" }
