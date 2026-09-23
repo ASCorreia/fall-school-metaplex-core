@@ -7,3 +7,5 @@ build
 test-ledger
 .yarn
 wallet.json
+.surfpool/
+02-anchor-track/yarn.lock
