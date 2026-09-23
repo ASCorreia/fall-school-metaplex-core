@@ -7,7 +7,7 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-soulbound_nft = "GA38R9gAWpDQT5djaArDgaW8VSnCg467oWB5sAyYdWtv"
+soulbound_nft = "GQLA7M7B7dqLadJyWNJUnUt8PDWqK8xzMQTKf3H3JvjS"
 
 [provider]
 cluster = "Localnet"
