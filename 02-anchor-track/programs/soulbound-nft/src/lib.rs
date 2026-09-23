@@ -5,7 +5,7 @@ use anchor_lang::prelude::*;
 pub mod instructions;
 pub use instructions::*;
 
-declare_id!("GA38R9gAWpDQT5djaArDgaW8VSnCg467oWB5sAyYdWtv");
+declare_id!("4Fj4Dda1b6hyF2hcTtvCbHHNNXs7N9tWJoVa4G6n9QY4");
 
 #[program]
 pub mod soulbound_nft {
