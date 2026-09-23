@@ -41,26 +41,19 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
     CreateV2CpiBuilder::new(&mpl_core_program)
         .asset(&asset)
         .payer(&payer)
+        .authority(Some(&asset)) 
         // The recipient wallet the NFT is permanently bound to.
         .owner(Some(&owner))
         .system_program(&system_program)
         .name(name)
         .uri(uri)
-        // ── YOUR CODE STARTS HERE ────────────────────────────────────────
-        //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
-        //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
-        // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
+           .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         .invoke()?;
 
-    msg!(
+         msg!(
         "Soul-bound Core asset {} minted to {}",
         ctx.accounts.asset.key(),
         ctx.accounts.owner.key()
@@ -68,3 +61,4 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
 
     Ok(())
 }
+       
