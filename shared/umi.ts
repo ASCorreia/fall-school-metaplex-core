@@ -16,15 +16,18 @@ export const RPC_URL =
 const WALLET_PATH = path.resolve(__dirname, "..", "wallet.json");
 
 export function getUmi(): Umi {
-  const umi = createUmi(RPC_URL).use(mplCore());
+  // Keep post-mint reads at the same commitment as sendAndConfirm; on local
+  // validators, a just-confirmed asset need not be finalized yet.
+  const umi = createUmi(RPC_URL, "confirmed").use(mplCore());
 
   let secretKey: Uint8Array;
   if (fs.existsSync(WALLET_PATH)) {
+    fs.chmodSync(WALLET_PATH, 0o600);
     secretKey = new Uint8Array(JSON.parse(fs.readFileSync(WALLET_PATH, "utf8")));
   } else {
     const fresh = generateSigner(umi);
     secretKey = fresh.secretKey;
-    fs.writeFileSync(WALLET_PATH, JSON.stringify(Array.from(secretKey)));
+    fs.writeFileSync(WALLET_PATH, JSON.stringify(Array.from(secretKey)), { mode: 0o600 });
     console.log("Created a new devnet wallet at", WALLET_PATH);
   }
 

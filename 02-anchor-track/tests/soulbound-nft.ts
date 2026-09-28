@@ -4,7 +4,7 @@ import { Keypair, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 import { assert } from "chai";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { keypairIdentity, publicKey } from "@metaplex-foundation/umi";
-import { fetchAsset, transferV1 } from "@metaplex-foundation/mpl-core";
+import { fetchAsset, transferV1, InvalidAuthorityError } from "@metaplex-foundation/mpl-core";
 import { SoulboundNft } from "../target/types/soulbound_nft";
 
 const MPL_CORE_PROGRAM_ID = new PublicKey(
@@ -25,7 +25,9 @@ describe("soulbound-nft", () => {
   // The wallet the NFT gets permanently bound to.
   const holder = Keypair.generate();
 
-  const umi = () => createUmi(provider.connection.rpcEndpoint);
+  // Use Anchor's confirmed connection; a separate Umi RPC defaults to a
+  // different commitment and may not see a newly created asset yet.
+  const umi = () => createUmi(provider.connection);
 
   it("mints a soul-bound Core NFT", async () => {
     await program.methods
@@ -60,6 +62,7 @@ describe("soulbound-nft", () => {
       coreAsset.permanentFreezeDelegate?.frozen === true,
       "asset should be permanently frozen (soul-bound)",
     );
+    assert.equal(coreAsset.permanentFreezeDelegate?.authority.type, "None");
   });
 
   it("cannot be transferred by its owner (soul-bound)", async () => {
@@ -82,11 +85,11 @@ describe("soulbound-nft", () => {
         newOwner: publicKey(destination.publicKey.toBase58()),
       }).sendAndConfirm(u);
       assert.fail("transfer should have failed for a soul-bound asset");
-    } catch (err: any) {
-      assert.notEqual(
-        err.message,
-        "transfer should have failed for a soul-bound asset",
-        "MPL Core should reject the transfer of a frozen asset",
+    } catch (err: unknown) {
+      const text = err instanceof Error ? err.message : String(err);
+      assert.isTrue(
+        err instanceof InvalidAuthorityError || /custom program error: 0x9\b/i.test(text),
+        `expected MPL Core's freeze rejection, got: ${text}`,
       );
     }
   });

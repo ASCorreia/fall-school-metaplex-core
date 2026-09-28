@@ -1,6 +1,4 @@
 use anchor_lang::prelude::*;
-// You will need these types for the TODOs below.
-#[allow(unused_imports)]
 use mpl_core::types::{PermanentFreezeDelegate, Plugin, PluginAuthority, PluginAuthorityPair};
 use mpl_core::{instructions::CreateV2CpiBuilder, ID as MPL_CORE_ID};
 
@@ -46,18 +44,12 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         .system_program(&system_program)
         .name(name)
         .uri(uri)
-        // ── YOUR CODE STARTS HERE ────────────────────────────────────────
-        //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
-        //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
-        // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
+        // The frozen bit prevents transfers immediately. No plugin authority
+        // means neither the owner nor the payer can unfreeze the asset later.
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         .invoke()?;
 
     msg!(
