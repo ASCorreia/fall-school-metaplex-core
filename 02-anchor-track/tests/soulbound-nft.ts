@@ -25,10 +25,13 @@ describe("soulbound-nft", () => {
   // The wallet the NFT gets permanently bound to.
   const holder = Keypair.generate();
 
-  const umi = () => createUmi(provider.connection.rpcEndpoint);
+  // Read at "confirmed": Anchor's provider confirms at "processed", and Umi's
+  // default read level ("finalized") lags ~13 s on the legacy local validator.
+  const umi = () =>
+    createUmi(provider.connection.rpcEndpoint, { commitment: "confirmed" });
 
   it("mints a soul-bound Core NFT", async () => {
-    await program.methods
+    const sig = await program.methods
       .mintSoulboundNft(NAME, URI)
       .accountsPartial({
         payer: provider.wallet.publicKey,
@@ -39,6 +42,7 @@ describe("soulbound-nft", () => {
       })
       .signers([asset])
       .rpc();
+    await provider.connection.confirmTransaction(sig, "confirmed");
 
     // The asset account exists and is owned by the MPL Core program.
     const info = await provider.connection.getAccountInfo(asset.publicKey);

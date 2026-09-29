@@ -1,6 +1,4 @@
 use anchor_lang::prelude::*;
-// You will need these types for the TODOs below.
-#[allow(unused_imports)]
 use mpl_core::types::{PermanentFreezeDelegate, Plugin, PluginAuthority, PluginAuthorityPair};
 use mpl_core::{instructions::CreateV2CpiBuilder, ID as MPL_CORE_ID};
 
@@ -48,15 +46,17 @@ pub fn handler(ctx: Context<MintSoulboundNft>, name: String, uri: String) -> Res
         .uri(uri)
         // ── YOUR CODE STARTS HERE ────────────────────────────────────────
         //
-        // TODO 1: Add ONE `PluginAuthorityPair` to this vec whose `plugin` is
-        //         the `PermanentFreezeDelegate` plugin, created already frozen.
-        //         (Hint: `Plugin::PermanentFreezeDelegate(...)`)
-        //
-        // TODO 2: Set its `authority` so that NOBODY can ever update the
-        //         plugin, i.e. the asset can never be thawed.
-        //         (Hint: which `PluginAuthority` variant is "no one"?)
-        //
-        .plugins(vec![])
+        // The soulbound part, in one plugin:
+        //   - PermanentFreezeDelegate { frozen: true }: the asset is frozen
+        //     from birth, so MPL Core rejects every transfer and burn.
+        //   - PluginAuthority::None: nobody holds the authority to update the
+        //     plugin, so it can never be thawed.
+        // Permanent plugins can only be attached at creation, which is why
+        // this happens inside CreateV2 and not in a later AddPlugin call.
+        .plugins(vec![PluginAuthorityPair {
+            plugin: Plugin::PermanentFreezeDelegate(PermanentFreezeDelegate { frozen: true }),
+            authority: Some(PluginAuthority::None),
+        }])
         // ── YOUR CODE ENDS HERE ──────────────────────────────────────────
         .invoke()?;
 
